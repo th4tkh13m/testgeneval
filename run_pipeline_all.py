@@ -20,13 +20,13 @@ temperatures = [0.2, 0.8]
 
 
 # Function to activate conda and run the command
-def run_command(model, temperature, results_dir, data_dir, num_processes):
+def run_command(model, temperature, results_dir, dataset_name_or_path, num_processes):
     num_samples = 1 if temperature == 0.2 else 5
     skip_full = "" if temperature == 0.2 else "--skip_full"
     command = f"""
     eval "$(conda shell.bash hook)"
-    conda activate swebench-testing
-    python run_pipeline.py --results_dir {results_dir} --dataset_dir {data_dir} --model {model} --temperature {temperature} --num_processes {num_processes} --azure --num_samples {num_samples} {skip_full} --rerun_eval
+    conda activate testgeneval
+    python run_pipeline.py --results_dir {results_dir} --dataset_name_or_path {dataset_name_or_path} --model {model} --temperature {temperature} --num_processes {num_processes} --azure --num_samples {num_samples} {skip_full} --rerun_eval
     """
     subprocess.run(command, shell=True, executable="/bin/bash")
 
@@ -39,7 +39,10 @@ if __name__ == "__main__":
         "--results_dir", type=str, help="Path to results directory", required=True
     )
     parser.add_argument(
-        "--dataset_dir", type=str, help="Path to dataset directory", required=True
+        "--dataset_name_or_path",
+        type=str,
+        required=True,
+        help="HuggingFace dataset name or local path",
     )
     parser.add_argument(
         "--num_processes", type=int, help="Number of processes to run", default=64
@@ -54,6 +57,6 @@ if __name__ == "__main__":
                 model,
                 temperature,
                 args.results_dir,
-                args.dataset_dir,
+                args.dataset_name_or_path,
                 args.num_processes,
             )

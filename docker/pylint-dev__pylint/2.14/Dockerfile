@@ -9,26 +9,7 @@ SHELL ["conda", "run", "-n", "pylint-dev__pylint__2.14", "/bin/bash", "-c"]
 
 COPY docker/pylint-dev__pylint/2.14/requirements.txt .
 
-RUN pip install "black==22.3.0"
-RUN pip install "flake8==4.0.1"
-RUN pip install "flake8-typing-imports==1.12.0"
-RUN pip install "isort==5.10.1"
-RUN pip install "mypy==0.960"
-RUN pip install "astroid==2.11.6  # Pinned to a specific version for tests"
-RUN pip install "typing-extensions~=4.2"
-RUN pip install "pytest~=7.1"
-RUN pip install "pytest-benchmark~=3.4"
-RUN pip install "pytest-timeout~=2.1"
-RUN pip install "coveralls~=3.3"
-RUN pip install "coverage~=6.4"
-RUN pip install "pre-commit~=2.19"
-RUN pip install "tbump~=6.9.0"
-RUN pip install "contributors-txt>=0.7.3"
-RUN pip install "pytest-cov~=3.0"
-RUN pip install "pytest-profiling~=1.7"
-RUN pip install "pytest-xdist~=2.5"
-RUN pip install "types-pkg_resources==0.1.3"
-RUN pip install "tox>=3"
+RUN pip install -r requirements.txt
 
 RUN pip install pytest
 RUN pip install coverage cosmic-ray

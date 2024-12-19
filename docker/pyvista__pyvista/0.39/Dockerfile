@@ -9,40 +9,7 @@ SHELL ["conda", "run", "-n", "pyvista__pyvista__0.39", "/bin/bash", "-c"]
 
 COPY docker/pyvista__pyvista/0.39/requirements.txt .
 
-RUN pip install "matplotlib<3.7.2"
-RUN pip install "numpy<1.25.0"
-RUN pip install "pillow<9.6.0"
-RUN pip install "pooch<1.8.0"
-RUN pip install "scooby>=0.5.1,<0.8.0"
-RUN pip install "cmocean<3.1"
-RUN pip install "colorcet<3.1.0"
-RUN pip install "hypothesis<6.74.2"
-RUN pip install "imageio<2.28.0"
-RUN pip install "imageio-ffmpeg<0.5.0"
-RUN pip install "ipygany<0.6.0"
-RUN pip install "ipython<9.0.0"
-RUN pip install "ipyvtklink<0.4.0"
-RUN pip install "ipywidgets<9.0.0"
-RUN pip install "meshio<5.4.0"
-RUN pip install "nest_asyncio<1.5.7"
-RUN pip install "numpydoc==1.5.0"
-RUN pip install "panel<0.15.0"
-RUN pip install "param<1.14.0"
-RUN pip install "pytest<7.4.0"
-RUN pip install "pytest-cov<4.1.0"
-RUN pip install "pytest-memprof<0.3.0"
-RUN pip install "pytest-xdist<3.3.0"
-RUN pip install "pytest_pyvista==0.1.8"
-RUN pip install "pythreejs<2.5.0"
-RUN pip install "Sphinx<6.3.0"
-RUN pip install "sphinx-gallery<0.14.0"
-RUN pip install "sympy<1.12.0"
-RUN pip install "tqdm<4.66.0"
-RUN pip install "trame>=2.2.6,<2.5"
-RUN pip install "trame-client>=2.5.1,<2.8"
-RUN pip install "trame-server>=2.8.0,<2.12"
-RUN pip install "trame-vtk>=2.4.0,<2.5"
-RUN pip install "trimesh<3.22.0"
+RUN pip install -r requirements.txt
 
 RUN pip install pytest
 RUN pip install coverage cosmic-ray

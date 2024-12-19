@@ -9,14 +9,7 @@ SHELL ["conda", "run", "-n", "matplotlib__matplotlib__3.1", "/bin/bash", "-c"]
 
 COPY docker/matplotlib__matplotlib/3.1/requirements.txt .
 
-RUN pip install "coverage"
-RUN pip install "pytest!=4.6.0"
-RUN pip install "pytest-cov"
-RUN pip install "pytest-rerunfailures"
-RUN pip install "pytest-timeout"
-RUN pip install "pytest-xdist"
-RUN pip install "python-dateutil"
-RUN pip install "tornado"
+RUN pip install -r requirements.txt
 RUN pip install coverage cosmic-ray
 RUN python -m pip install -e .
 

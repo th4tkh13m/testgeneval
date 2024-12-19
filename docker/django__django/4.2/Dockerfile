@@ -16,30 +16,7 @@ RUN git -c advice.detachedHead=false checkout 0fbdb9784da915fce5dcc1fe82bac9b478
 
 COPY docker/django__django/4.2/requirements.txt .
 
-RUN pip install "aiosmtpd"
-RUN pip install "asgiref >= 3.6.0"
-RUN pip install "argon2-cffi >= 19.2.0"
-RUN pip install "backports.zoneinfo; python_version < '3.9'"
-RUN pip install "bcrypt"
-RUN pip install "black"
-RUN pip install "docutils"
-RUN pip install "geoip2; python_version < '3.12'"
-RUN pip install "jinja2 >= 2.11.0"
-RUN pip install "numpy; python_version < '3.12'"
-RUN pip install "Pillow >= 6.2.1; sys_platform != 'win32' or python_version < '3.12'"
-RUN pip install "pylibmc; sys_platform != 'win32'"
-RUN pip install "pymemcache >= 3.4.0"
-RUN pip install "pytz"
-RUN pip install "pywatchman; sys_platform != 'win32'"
-RUN pip install "PyYAML"
-RUN pip install "redis >= 3.4.0"
-RUN pip install "selenium"
-RUN pip install "sqlparse >= 0.3.1"
-RUN pip install "tblib >= 1.5.0"
-RUN pip install "tzdata"
-RUN pip install "colorama; sys_platform == 'win32'"
-RUN pip install "coverage"
-RUN pip install "cosmic-ray"
+RUN pip install -r requirements.txt
 
 RUN python -m pip install -e .
 
@@ -52,6 +29,6 @@ ENV IMAGE_TYPE=pyenv
 WORKDIR /opt
 
 COPY swebench_docker swebench_docker
-COPY docker/pyenv/entrypoint.sh .
+COPY --chmod=0755 docker/pyenv/entrypoint.sh .
 
 ENTRYPOINT ["./entrypoint.sh"]

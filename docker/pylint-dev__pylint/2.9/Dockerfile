@@ -9,23 +9,7 @@ SHELL ["conda", "run", "-n", "pylint-dev__pylint__2.9", "/bin/bash", "-c"]
 
 COPY docker/pylint-dev__pylint/2.9/requirements.txt .
 
-RUN pip install "black==21.7b0;python_full_version>="3.6.2""
-RUN pip install "flake8==3.9.2"
-RUN pip install "isort==5.9.2"
-RUN pip install "mypy==0.910"
-RUN pip install "astroid==2.6.5  # Pinned to a specific version for tests"
-RUN pip install "pytest~=6.2"
-RUN pip install "pytest-benchmark~=3.4"
-RUN pip install "coveralls~=3.2"
-RUN pip install "coverage~=5.5"
-RUN pip install "pre-commit~=2.13;python_full_version>="3.6.2""
-RUN pip install "tbump~=6.3.2"
-RUN pip install "pyenchant~=3.2"
-RUN pip install "pytest-cov~=2.12"
-RUN pip install "pytest-profiling~=1.7"
-RUN pip install "pytest-xdist~=2.3"
-RUN pip install "types-pkg_resources==0.1.3"
-RUN pip install "types-toml==0.1.3"
+RUN pip install -r requirements.txt
 
 RUN pip install pytest
 RUN pip install coverage cosmic-ray

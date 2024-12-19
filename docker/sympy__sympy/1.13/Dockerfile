@@ -9,17 +9,7 @@ SHELL ["conda", "run", "-n", "sympy__sympy__1.13", "/bin/bash", "-c"]
 
 COPY docker/sympy__sympy/1.13/requirements.txt .
 
-RUN pip install "mpmath"
-RUN pip install "pytest"
-RUN pip install "pytest-xdist"
-RUN pip install "pytest-timeout"
-RUN pip install "pytest-split"
-RUN pip install "pytest-doctestplus"
-RUN pip install "hypothesis"
-RUN pip install "flake8"
-RUN pip install "flake8-comprehensions"
-RUN pip install "coverage"
-RUN pip install "cosmic-ray"
+RUN pip install -r requirements.txt
 
 RUN pip install mpmath==1.3.0
 

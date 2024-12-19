@@ -9,39 +9,7 @@ SHELL ["conda", "run", "-n", "matplotlib__matplotlib__3.4", "/bin/bash", "-c"]
 
 COPY docker/matplotlib__matplotlib/3.4/requirements.txt .
 
-RUN pip install "sphinx>=1.8.1,!=2.0.0,<4.3.0"
-RUN pip install "colorspacious"
-RUN pip install "ipython"
-RUN pip install "ipywidgets"
-RUN pip install "numpydoc>=0.8"
-RUN pip install "packaging>=20"
-RUN pip install "pyparsing<3.0.0"
-RUN pip install "mpl-sphinx-theme"
-RUN pip install "sphinxcontrib-svg2pdfconverter>=1.1.0"
-RUN pip install "sphinx-gallery>=0.10"
-RUN pip install "sphinx-copybutton"
-RUN pip install "sphinx-panels"
-RUN pip install "scipy"
-RUN pip install "certifi"
-RUN pip install "coverage"
-RUN pip install "pyparsing<3.0.0"
-RUN pip install "pytest!=4.6.0,!=5.4.0"
-RUN pip install "pytest-cov"
-RUN pip install "pytest-rerunfailures"
-RUN pip install "pytest-timeout"
-RUN pip install "pytest-xdist"
-RUN pip install "python-dateutil"
-RUN pip install "tornado"
-RUN pip install "ipykernel"
-RUN pip install "nbconvert[execute]!=6.0.0,!=6.0.1"
-RUN pip install "nbformat!=5.0.0,!=5.0.1"
-RUN pip install "pandas!=0.25.0"
-RUN pip install "pikepdf"
-RUN pip install "pytz"
-RUN pip install "pywin32; sys.platform == 'win32'"
-RUN pip install "flake8>=3.8"
-RUN pip install "pydocstyle>=5.1.0"
-RUN pip install "flake8-docstrings>=1.4.0"
+RUN pip install -r requirements.txt
 RUN pip install coverage cosmic-ray
 RUN python -m pip install -e .
 
