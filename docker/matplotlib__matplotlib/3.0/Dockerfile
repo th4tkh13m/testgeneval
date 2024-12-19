@@ -9,21 +9,7 @@ SHELL ["conda", "run", "-n", "matplotlib__matplotlib__3.0", "/bin/bash", "-c"]
 
 COPY docker/matplotlib__matplotlib/3.0/requirements.txt .
 
-RUN pip install "codecov"
-RUN pip install "coverage"
-RUN pip install "cycler"
-RUN pip install "numpy"
-RUN pip install "pillow"
-RUN pip install "pyparsing"
-RUN pip install "pytest"
-RUN pip install "pytest-cov"
-RUN pip install "pytest-faulthandler"
-RUN pip install "pytest-rerunfailures"
-RUN pip install "pytest-timeout"
-RUN pip install "pytest-xdist"
-RUN pip install "python-dateutil"
-RUN pip install "tornado"
-RUN pip install "tox"
+RUN pip install -r requirements.txt
 RUN pip install coverage cosmic-ray
 RUN CFLAGS=-I/usr/include/freetype2 python -m pip install -e .
 

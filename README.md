@@ -25,11 +25,11 @@ Docker images for testbeds used in the `TestGenEvalLite` dataset has been built 
 ### TestGenEval
 Docker images for testbeds used in the `TestGenEval` dataset has been built and tested.
 
-## Setup and Installation
+## Setup
 
 To setup the repository run
 ```
-git@github.com:facebookresearch/testgeneval
+git clone git@github.com:facebookresearch/testgeneval.git
 cd testgeneval
 conda env create -f testgeneval.yaml
 conda activate testgeneval
@@ -37,7 +37,11 @@ conda activate testgeneval
 
 Modify the `.env_template` file with the appropriate values and rename it to `.env` (specifically make sure to set SWEBENCH_DOCKER_FORK_DIR to the current directory where the repository was cloned)
 
-To build the docker images (adapted from [SWEBench Docker](https://github.com/aorwall/SWE-bench-docker/tree/main/docker)) run one of these commands:
+**The env template setup is important, make sure you do this**
+
+## Building TestGenEval
+
+To build the docker images locally (adapted from [SWEBench Docker](https://github.com/aorwall/SWE-bench-docker/tree/main/docker)) run one of these commands:
 
 **TestGenEvalLite** - TestGenEvalLite for faster evaluation
 ```
@@ -49,17 +53,49 @@ make -f Makefile.testgenevallite
 make -f Makefile.testgeneval
 ```
 
+**OR** 
+
+You can simply just run with images pushed to Dockerhub
+
+To pull all images (TestGenEval) run
+```
+python scripts/pull_images.py --makefile Makefile.testgeneval
+```
+
+To pull lite images (TestGenEvalLite) run
+```
+python scripts/pull_images.py --makefile Makefile.testgenevallite
+```
+
+## TestGenEval Datasets
+
+The TestGenEval datasets are available on huggingface:
+- [kjain14/testgeneval](https://huggingface.co/datasets/kjain14/testgeneval)
+- [kjain14/testgenevallite](https://huggingface.co/datasets/kjain14/testgenevallite)
+
 ## Running TestGenEval
 
 Running TestGenEval is relatively simple.
 
 There is a python script that will run both prediction and inference.
 
+If you built docker images locally:
+
 ```
 python run_pipeline.py \
---results_dir results
---dataset_dir dataset/tesgenevallite
+--results_dir results \
+--dataset_name_or_path kjain14/testgenevallite \
 --model meta-llama/Meta-Llama-3.1-8B-Instruct
+```
+
+Otherwise to pull from Dockerhub:
+
+```
+python run_pipeline.py \
+--results_dir results \
+--dataset_name_or_path kjain14/testgenevallite \
+--model meta-llama/Meta-Llama-3.1-8B-Instruct \
+--namespace kdjain
 ```
 
 ## Adding a new model to TestGenEval

@@ -16,22 +16,7 @@ RUN git -c advice.detachedHead=false checkout 3574a6d32fcd88d404b110a8d2204db1dd
 
 COPY docker/django__django/2.1/requirements.txt .
 
-RUN pip install --trusted-host pypi.python.org --trusted-host files.pythonhosted.org --trusted-host pypi.org "argon2-cffi >= 16.1.0"
-RUN pip install --trusted-host pypi.python.org --trusted-host files.pythonhosted.org --trusted-host pypi.org "bcrypt"
-RUN pip install --trusted-host pypi.python.org --trusted-host files.pythonhosted.org --trusted-host pypi.org "docutils"
-RUN pip install --trusted-host pypi.python.org --trusted-host files.pythonhosted.org --trusted-host pypi.org "geoip2"
-RUN pip install --trusted-host pypi.python.org --trusted-host files.pythonhosted.org --trusted-host pypi.org "jinja2 >= 2.9.2"
-RUN pip install --trusted-host pypi.python.org --trusted-host files.pythonhosted.org --trusted-host pypi.org "numpy"
-RUN pip install --trusted-host pypi.python.org --trusted-host files.pythonhosted.org --trusted-host pypi.org "Pillow"
-RUN pip install --trusted-host pypi.python.org --trusted-host files.pythonhosted.org --trusted-host pypi.org "pylibmc; sys_platform != 'win32'"
-RUN pip install --trusted-host pypi.python.org --trusted-host files.pythonhosted.org --trusted-host pypi.org "python-memcached >= 1.59"
-RUN pip install --trusted-host pypi.python.org --trusted-host files.pythonhosted.org --trusted-host pypi.org "pytz"
-RUN pip install --trusted-host pypi.python.org --trusted-host files.pythonhosted.org --trusted-host pypi.org "PyYAML"
-RUN pip install --trusted-host pypi.python.org --trusted-host files.pythonhosted.org --trusted-host pypi.org "selenium"
-RUN pip install --trusted-host pypi.python.org --trusted-host files.pythonhosted.org --trusted-host pypi.org "sqlparse"
-RUN pip install --trusted-host pypi.python.org --trusted-host files.pythonhosted.org --trusted-host pypi.org "tblib"
-RUN pip install --trusted-host pypi.python.org --trusted-host files.pythonhosted.org --trusted-host pypi.org "coverage"
-RUN pip install --trusted-host pypi.python.org --trusted-host files.pythonhosted.org --trusted-host pypi.org "cosmic-ray"
+RUN pip install --trusted-host pypi.python.org --trusted-host files.pythonhosted.org --trusted-host pypi.org -r requirements.txt
 
 RUN python -m pip install -e .
 
@@ -44,6 +29,6 @@ ENV IMAGE_TYPE=pyenv
 WORKDIR /opt
 
 COPY swebench_docker swebench_docker
-COPY docker/pyenv/entrypoint.sh .
+COPY --chmod=0755 docker/pyenv/entrypoint.sh .
 
 ENTRYPOINT ["./entrypoint.sh"]

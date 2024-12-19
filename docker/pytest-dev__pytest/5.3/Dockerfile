@@ -8,7 +8,7 @@ RUN conda create -n pytest-dev__pytest__5.3 python=3.9  -y
 SHELL ["conda", "run", "-n", "pytest-dev__pytest__5.3", "/bin/bash", "-c"]
 
 
-RUN pip install attrs==23.1.0 more-itertools==10.1.0 packaging==23.1 pluggy==0.13.1 py==1.11.0 wcwidth==0.2.6
+RUN pip install attrs==23.1.0 more-itertools==10.1.0 packaging==23.1 setuptools==68.0.0 pluggy==0.13.1 py==1.11.0 wcwidth==0.2.6
 RUN pip install coverage cosmic-ray
 
 RUN pip install -e .

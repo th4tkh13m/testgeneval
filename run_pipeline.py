@@ -14,7 +14,10 @@ if __name__ == "__main__":
         "--results_dir", type=str, help="Path to results directory", required=True
     )
     parser.add_argument(
-        "--dataset_dir", type=str, help="Path to dataset directory", required=True
+        "--dataset_name_or_path",
+        type=str,
+        required=True,
+        help="HuggingFace dataset name or local path",
     )
     parser.add_argument(
         "--model",
@@ -34,15 +37,30 @@ if __name__ == "__main__":
             "mistralai/Codestral-22B-v0.1",
             "google/gemma-2-9b-it",
             "google/gemma-2-27b-it",
+            "baseline",
         ],
         required=True,
     )
     parser.add_argument(
-        "--num_samples",
+        "--num_samples_full",
         type=int,
         help="Number of samples to run",
         choices=VALID_K,
         default=1,
+    )
+    parser.add_argument(
+        "--num_samples_completion",
+        type=int,
+        help="Number of samples to run",
+        choices=VALID_K,
+        default=5,
+    )
+    parser.add_argument(
+        "--namespace",
+        type=str,
+        help="Docker repository namespace",
+        required=False,
+        default="aorwall",
     )
     parser.add_argument(
         "--num_processes", type=int, help="Number of processes to run", default=1
@@ -69,23 +87,31 @@ if __name__ == "__main__":
     parser.add_argument(
         "--skip_full", action="store_true", help="(Optional) Skip full inference"
     )
-
+    parser.add_argument(
+        "--skip_completion",
+        action="store_true",
+        help="(Optional) Skip completion inference",
+    )
     args = parser.parse_args()
 
     print(
         "NOTE: Make sure you have built the docker images for the appropriate dataset"
     )
 
-    dataset_dir = os.path.abspath(args.dataset_dir)
+    dataset_name_or_path = (
+        os.path.abspath(args.dataset_name_or_path)
+        if os.path.exists(args.dataset_name_or_path)
+        else args.dataset_name_or_path
+    )
 
-    data_suf = dataset_dir.split("/")[-1]
+    data_suf = dataset_name_or_path.split("/")[-1]
     model_suf = args.model.split("/")[-1]
 
     if model_suf == "Meta-Llama-3.1-405B-Instruct":
         args.model = model_suf
 
     print(
-        f"Running pipeline for {args.model} with pass@{args.num_samples} on {data_suf}"
+        f"Running pipeline for {args.model} with pass@{args.num_samples_full} (full) and pass@{args.num_samples_completion} (completion) on {data_suf}"
     )
 
     base_dir = os.path.join(os.path.abspath(args.results_dir), data_suf)
@@ -117,6 +143,7 @@ if __name__ == "__main__":
             model_extra_cmd = ["--model_args", f"temperature={args.temperature}"]
             model_extra_cmd += ["--azure"] if args.azure else []
             model_extra_cmd += ["--skip_full"] if args.skip_full else []
+            model_extra_cmd += ["--skip_completion"] if args.skip_completion else []
             # Run model prediction
             model_cmd = [
                 "python",
@@ -125,14 +152,18 @@ if __name__ == "__main__":
                 "--model_name_or_path",
                 args.model,
                 "--dataset_name_or_path",
-                dataset_dir,
+                dataset_name_or_path,
                 "--output_dir",
                 pred_dir,
-                "--num_samples",
-                str(args.num_samples),
+                "--num_samples_full",
+                str(args.num_samples_full),
+                "--num_samples_completion",
+                str(args.num_samples_completion),
             ] + model_extra_cmd
             subprocess.run(model_cmd)
-        else:
+        elif args.model != "baseline":
+            model_extra_cmd = ["--skip_full"] if args.skip_full else []
+            model_extra_cmd += ["--skip_completion"] if args.skip_completion else []
             model_cmd = [
                 "python",
                 "-m",
@@ -140,15 +171,18 @@ if __name__ == "__main__":
                 "--model_name_or_path",
                 args.model,
                 "--dataset_name_or_path",
-                dataset_dir,
+                dataset_name_or_path,
                 "--use_auth_token",
                 "--output_dir",
                 pred_dir,
                 "--num_samples_completion",
-                str(args.num_samples),
+                str(args.num_samples_completion),
+                "--num_samples_full",
+                str(args.num_samples_full),
                 "--temperature",
                 str(args.temperature),
             ]
+            model_cmd += model_extra_cmd
             subprocess.run(model_cmd)
 
     # Run evaluation
@@ -163,9 +197,11 @@ if __name__ == "__main__":
             "--log_dir",
             log_dir,
             "--swe_bench_tasks",
-            dataset_dir,
+            dataset_name_or_path,
             "--num_processes",
             str(args.num_processes),
+            "--namespace",
+            args.namespace,
         ] + extra_cmd
         report_cmd = [
             "python",
@@ -175,7 +211,7 @@ if __name__ == "__main__":
             "--output_dir",
             base_dir,
             "--swe_bench_tasks",
-            dataset_dir,
+            dataset_name_or_path,
         ]
     else:
         eval_cmd = [
@@ -186,9 +222,11 @@ if __name__ == "__main__":
             "--log_dir",
             log_dir,
             "--swe_bench_tasks",
-            dataset_dir,
+            dataset_name_or_path,
             "--num_processes",
             str(args.num_processes),
+            "--namespace",
+            args.namespace,
         ] + extra_cmd
         report_cmd = [
             "python",
@@ -200,7 +238,7 @@ if __name__ == "__main__":
             "--output_dir",
             base_dir,
             "--swe_bench_tasks",
-            dataset_dir,
+            dataset_name_or_path,
         ]
 
     subprocess.run(eval_cmd)

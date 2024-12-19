@@ -30,6 +30,6 @@ ENV IMAGE_TYPE=pyenv
 WORKDIR /opt
 
 COPY swebench_docker swebench_docker
-COPY docker/pyenv/entrypoint.sh .
+COPY --chmod=0755 docker/pyenv/entrypoint.sh .
 
 ENTRYPOINT ["./entrypoint.sh"]

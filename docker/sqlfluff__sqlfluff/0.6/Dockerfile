@@ -9,21 +9,7 @@ SHELL ["conda", "run", "-n", "sqlfluff__sqlfluff__0.6", "/bin/bash", "-c"]
 
 COPY docker/sqlfluff__sqlfluff/0.6/requirements.txt .
 
-RUN pip install "flake8"
-RUN pip install "flake8-docstrings"
-RUN pip install "flake8-black"
-RUN pip install "doc8"
-RUN pip install "Pygments"
-RUN pip install "coverage"
-RUN pip install "hypothesis"
-RUN pip install "pytest"
-RUN pip install "pytest-cov"
-RUN pip install "pytest-sugar"
-RUN pip install "mypy"
-RUN pip install "types-toml"
-RUN pip install "types-pkg_resources"
-RUN pip install "types-chardet"
-RUN pip install "requests"
+RUN pip install -r requirements.txt
 
 RUN pip install coverage cosmic-ray
 

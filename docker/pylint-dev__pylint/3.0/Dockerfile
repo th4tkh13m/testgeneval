@@ -9,24 +9,7 @@ SHELL ["conda", "run", "-n", "pylint-dev__pylint__3.0", "/bin/bash", "-c"]
 
 COPY docker/pylint-dev__pylint/3.0/requirements.txt .
 
-RUN pip install "astroid==3.0.0a9  # Pinned to a specific version for tests"
-RUN pip install "typing-extensions~=4.7"
-RUN pip install "py~=1.11.0"
-RUN pip install "pytest~=7.4"
-RUN pip install "pytest-benchmark~=4.0"
-RUN pip install "pytest-timeout~=2.1"
-RUN pip install "towncrier~=23.6"
-RUN pip install "requests"
-RUN pip install "setuptools==41.6.0"
-RUN pip install "coverage~=7.3"
-RUN pip install "tbump~=6.10.0"
-RUN pip install "contributors-txt>=1.0.0"
-RUN pip install "pytest-cov~=4.1"
-RUN pip install "pytest-profiling~=1.7"
-RUN pip install "pytest-xdist~=3.3"
-RUN pip install "six"
-RUN pip install "types-pkg_resources==0.1.3"
-RUN pip install "tox>=3"
+RUN pip install -r requirements.txt
 
 RUN pip install astroid==3.0.0a6 pytest
 RUN pip install coverage cosmic-ray
