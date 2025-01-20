@@ -778,16 +778,18 @@ MAP_VERSION_TO_INSTALL: Dict[str, Dict[str, Dict[str, Any]]] = {
 MAP_REPO_TO_INSTALL: Dict[str, Any] = {}
 
 # Constants - Task Instance Test Frameworks
-TEST_PYTEST: str = "coverage run -m pytest --no-header -rA --tb=no -p no:cacheprovider"
+TEST_PYTEST: str = (
+    "coverage run --branch -m pytest --no-header -rA --tb=no -p no:cacheprovider"
+)
 TEST_PYTEST_SKIP_NO_HEADER: str = (
-    "coverage run -m pytest -rA --tb=no -p no:cacheprovider"
+    "coverage run --branch -m pytest -rA --tb=no -p no:cacheprovider"
 )
 MAP_REPO_TO_TEST_FRAMEWORK: Dict[str, str] = {
     "astropy/astropy": TEST_PYTEST,
-    "django/django": "coverage run ./tests/runtests.py --verbosity 2",
+    "django/django": "coverage run --branch ./tests/runtests.py --verbosity 2",
     "marshmallow-code/marshmallow": TEST_PYTEST,
     "matplotlib/matplotlib": TEST_PYTEST,
-    "mwaskom/seaborn": "coverage run -m pytest --no-header -rA",
+    "mwaskom/seaborn": "coverage run --branch -m pytest --no-header -rA",
     "pallets/flask": TEST_PYTEST,
     "psf/requests": TEST_PYTEST,
     "pvlib/pvlib-python": TEST_PYTEST,
@@ -795,13 +797,13 @@ MAP_REPO_TO_TEST_FRAMEWORK: Dict[str, str] = {
     "pydicom/pydicom": TEST_PYTEST_SKIP_NO_HEADER,
     "pylint-dev/astroid": TEST_PYTEST,
     "pylint-dev/pylint": TEST_PYTEST,
-    "pytest-dev/pytest": "coverage run -m pytest -rA",
+    "pytest-dev/pytest": "coverage run --branch -m pytest -rA",
     "pyvista/pyvista": TEST_PYTEST,
     "scikit-learn/scikit-learn": TEST_PYTEST_SKIP_NO_HEADER,
     "sphinx-doc/sphinx": "tox -epy39 -v --",
     "sqlfluff/sqlfluff": TEST_PYTEST,
-    "swe-bench/humaneval": "coverage run python",
-    "sympy/sympy": "coverage run bin/test --no-subprocess -C --verbose",
+    "swe-bench/humaneval": "coverage run --branch python",
+    "sympy/sympy": "coverage run --branch bin/test --no-subprocess -C --verbose",
 }
 
 # Constants - Task Instance Requirements File Paths
@@ -839,9 +841,11 @@ MAP_REPO_TO_DEB_PACKAGES: Dict[str, List[str]] = {
 # Constants - Evaluation Keys
 KEY_INSTANCE_ID: str = "instance_id"
 KEY_ID: str = "id"
+REPO_ID: str = "repo"
 KEY_MODEL: str = "model_name_or_path"
 KEY_PREDICTIONS: str = "preds"
 KEY_TEST_FILE_PATH: str = "test_file"
+KEY_CODE_FILE_PATH: str = "code_file"
 KEY_BASELINES: str = "preds_context"
 
 # Constants - Logging

@@ -12,6 +12,7 @@ import time
 
 import dotenv
 from swebench_docker.constants import MAP_VERSION_TO_INSTALL
+from typing import Dict
 
 logger = logging.getLogger(__name__)
 dotenv.load_dotenv()
@@ -30,7 +31,7 @@ async def run_docker_evaluation(
     base64_instance: bool = True,
     only_baseline: bool = False,
     skip_mutation: bool = False,
-):
+) -> Dict:
     repo_name = task_instance["repo"].replace("/", "_")
 
     specifications = MAP_VERSION_TO_INSTALL[task_instance["repo"]][
@@ -52,6 +53,7 @@ async def run_docker_evaluation(
         )
 
     swebench_docker_fork_dir = os.environ.get("SWEBENCH_DOCKER_FORK_DIR")
+    logger.info(f"SWEBENCH_DOCKER_FORK_DIR: {swebench_docker_fork_dir}")
 
     if swebench_docker_fork_dir:
         # Create a temporary file to store the task_instance JSON
@@ -79,7 +81,7 @@ async def run_docker_evaluation(
             # =======
             # Map file instead pass the instance as env var to avoid "Argument list too long" error
             "-v",
-            f"{tmpfile_path}:/home/swe-bench/task_instance.json:ro",
+            f"{tmpfile_path}:/home/swe-bench/task_instance.json",
             "-e",
             f"LOG_DIR={container_log_dir}",
             "-e",
@@ -161,6 +163,13 @@ async def run_docker_evaluation(
             logger.info(
                 f"[{task_instance['id']}][{docker_image}]  Container ran successfully in {elapsed_time} seconds."
             )
+        # read task instance from tmpfile_path
+        if swebench_docker_fork_dir:
+            with open(tmpfile_path, "r") as f:
+                task_instance = json.load(f)
+            return task_instance
+        else:
+            return task_instance
     except Exception as e:
         logger.warning(
             f"[{task_instance['id']}][{docker_image}]  Error running container: {e}"

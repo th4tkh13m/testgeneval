@@ -6,8 +6,10 @@ import os
 from datasets import load_dataset, load_from_disk
 from swebench_docker.constants import KEY_ID
 
+from typing import Dict
 
-def get_eval_refs(data_path_or_name):
+
+def get_eval_refs(data_path_or_name: str) -> Dict:
     decode_keys = False
     if os.path.isfile(data_path_or_name):
         if data_path_or_name.endswith(".jsonl"):
@@ -26,3 +28,17 @@ def get_eval_refs(data_path_or_name):
         data = all_data
 
     return {d[KEY_ID]: d for d in data}
+
+
+def get_test_tasks(data_path_or_name: str) -> Dict:
+    decode_keys = False
+    data = None
+    if os.path.isfile(data_path_or_name):
+        if data_path_or_name.endswith(".jsonl"):
+            with open(data_path_or_name, "r", encoding="utf-8") as jsonl_file:
+                data = [json.loads(line) for line in jsonl_file]
+        elif data_path_or_name.endswith(".json"):
+            with open(data_path_or_name, "r", encoding="utf-8") as json_file:
+                data = json.load(json_file)
+    print(f"Loading data from {data_path_or_name} file, from path {data_path_or_name}")
+    return data

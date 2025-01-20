@@ -9,10 +9,12 @@ import re
 import subprocess
 import sys
 from typing import Optional, Tuple
+from coverage import CoverageData
 
 from swebench_docker.constants import (
     KEY_BASELINES,
     KEY_MODEL,
+    KEY_INSTANCE_ID,
     KEY_PREDICTIONS,
     KEY_TEST_FILE_PATH,
     MAP_REPO_TO_TEST_FRAMEWORK,
@@ -165,7 +167,7 @@ def extract_preamble_classes_and_functions(code, tcm):
 
 
 def postprocess_tests(
-    task_instance, preamble, class_name, methods, successful_tests, tcm
+    task_instance, preamble, class_name, methods, successful_tests, tcm, setting
 ):
     repo = task_instance["repo"]
     django_repo = repo == "django/django"
@@ -200,9 +202,49 @@ def postprocess_tests(
         if success:
             successful_tests.append((class_name, method_name, test_case))
 
+            # check if .corverage exist
+            if os.path.exists(".coverage") == False:
+                raise Exception("Coverage file not found")
+
+            data = CoverageData(
+                basename=".coverage",
+                suffix=None,
+                warn=None,
+                debug=None,
+            )
+            data.read()
+            logger.info(f"Testing for code file: {task_instance['code_file']}")
+            logger.info(f"Coverage data: {data._file_map}")
+
+            arcs = data.arcs(filename=task_instance[KEY_INSTANCE_ID])
+            if arcs is None:
+                logger.info(f"Arcs not found")
+            else:
+                branches = []
+                visited = []
+                for e in arcs:
+                    if e[0] < 0:
+                        continue
+                    if e[1] < 0:
+                        continue
+                    if e[0] in visited:
+                        for i, branch in enumerate(branches):
+                            if e[0] in branch:
+                                branches[i].append(e[1])
+                                visited.append(e[1])
+                    else:
+                        branches.append([e[0], e[1]])
+                        visited.append(e[0])
+                        visited.append(e[1])
+                task_instance["branches"][setting] = branches
+
+                if os.path.exists(".coverage"):
+                    logger.info("Removing coverage")
+                    os.remove(".coverage")
+
 
 def postprocess_functions(
-    task_instance, preamble, test_functions, successful_tests, tcm
+    task_instance, preamble, test_functions, successful_tests, tcm, setting
 ):
     repo = task_instance["repo"]
     django_repo = repo == "django/django"
@@ -240,11 +282,51 @@ def postprocess_functions(
             else:
                 successful_tests.append((None, test_function))
 
+            # check if .corverage exist
+            if os.path.exists(".coverage") == False:
+                raise Exception("Coverage file not found")
+
+            data = CoverageData(
+                basename=".coverage",
+                suffix=None,
+                warn=None,
+                debug=None,
+            )
+            data.read()
+            logger.info(f"Testing for code file: {task_instance['code_file']}")
+            logger.info(f"Coverage data: {data._file_map}")
+
+            arcs = data.arcs(filename=task_instance[KEY_INSTANCE_ID])
+            if arcs is None:
+                logger.info(f"Arcs not found")
+            else:
+                branches = []
+                visited = []
+                for e in arcs:
+                    if e[0] < 0:
+                        continue
+                    if e[1] < 0:
+                        continue
+                    if e[0] in visited:
+                        for i, branch in enumerate(branches):
+                            if e[0] in branch:
+                                branches[i].append(e[1])
+                                visited.append(e[1])
+                    else:
+                        branches.append([e[0], e[1]])
+                        visited.append(e[0])
+                        visited.append(e[1])
+                task_instance["branches"][setting] = branches
+
+                if os.path.exists(".coverage"):
+                    logger.info("Removing coverage")
+                    os.remove(".coverage")
+
     if django_repo and class_content:
         successful_tests.append((None, class_wrapper_start + class_content))
 
 
-def full_processing(prompt_list, tcm, task_instance, skip_mutation):
+def full_processing(prompt_list, tcm, task_instance, skip_mutation, setting: str):
     for prompt in prompt_list:
         preamble, classes, test_functions = extract_preamble_classes_and_functions(
             prompt, tcm
@@ -254,13 +336,23 @@ def full_processing(prompt_list, tcm, task_instance, skip_mutation):
         if classes:
             for class_name, methods, start in classes:
                 postprocess_tests(
-                    task_instance, preamble, class_name, methods, successful_tests, tcm
+                    task_instance,
+                    preamble,
+                    class_name,
+                    methods,
+                    successful_tests,
+                    tcm,
+                    setting,
                 )
 
         if test_functions:
             postprocess_functions(
-                task_instance, preamble, test_functions, successful_tests, tcm
+                task_instance, preamble, test_functions, successful_tests, tcm, setting
             )
+
+        # save task_instance
+        with open("/home/swe-bench/task_instance.json", "w") as f:
+            json.dump(task_instance, f)
 
         tcm.log.write(f"{TESTS_CONFIG}full pred\n")
         if len(successful_tests) > 0:
@@ -354,7 +446,7 @@ def main(
         + testbed_name
         + "\nLog dir: "
         + log_dir
-        + "\nSetting: "
+        + "\nTest case: "
         + setting
     )
     logger.info(f"Only Baseline: {only_baseline}")
@@ -388,13 +480,18 @@ def main(
             sys.exit(1)
 
         # Make baselines a list so the loop below works
-        prompt_list = (
-            [task_instance[KEY_BASELINES][setting]]
-            if only_baseline
-            else task_instance[KEY_PREDICTIONS][setting]
-        )
+        if "test_case" not in setting:
+            prompt_list = (
+                [task_instance[KEY_BASELINES][setting]]
+                if only_baseline
+                else task_instance[KEY_PREDICTIONS][setting]
+            )
+        else:
+            prompt_list = [task_instance["testcases"][setting]]
         if setting == "full":
-            full_processing(prompt_list, tcm, task_instance, skip_mutation)
+            full_processing(
+                prompt_list, tcm, task_instance, skip_mutation, setting=setting
+            )
         else:
             completion_processing(
                 prompt_list, tcm, setting, task_instance, only_baseline, skip_mutation

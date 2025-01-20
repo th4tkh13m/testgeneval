@@ -5,8 +5,8 @@ import argparse
 import asyncio
 import logging
 import os
-
-from swebench_docker.constants import KEY_BASELINES, KEY_ID
+from rich.pretty import pretty_repr
+from swebench_docker.constants import KEY_BASELINES, KEY_ID, REPO_ID
 from swebench_docker.run_docker import run_docker_evaluation
 from swebench_docker.utils import get_eval_refs
 
@@ -20,9 +20,12 @@ async def main(
     swe_bench_tasks: str,
     namespace: str,
     log_dir: str,
+    save_dir: str,
+    repo: str = None,
     skip_existing: bool = False,
     timeout: int = 60,
     num_processes: int = -1,
+    debug: bool = False,
 ):
     """
     Runs evaluation on predictions for each model/repo/version combination.
@@ -34,6 +37,14 @@ async def main(
     tasks = list(get_eval_refs(swe_bench_tasks).values())
     if not isinstance(tasks, list):
         raise ValueError(f"{swe_bench_tasks} must contain an array of tasks")
+    if debug:
+        print(f"First task keys: {pretty_repr(tasks[0].keys())}")
+        print(f"Number of tasks: {len(tasks)}")
+        # exit()
+    if repo is not None:
+        tasks = [t for t in tasks if t[REPO_ID] == repo]
+    if debug:
+        print(f"Number of tasks after filtering by repo: {len(tasks)}")
 
     filtered_tasks = []
     for task_instance in tasks:
@@ -60,6 +71,9 @@ async def main(
     sem = asyncio.Semaphore(num_processes if num_processes > 0 else len(tasks))
     asyncio_tasks = []
     for task_instance in tasks:
+        if debug:
+            print(f"An example of task_instance: {pretty_repr(task_instance.keys())}")
+            exit()
         for setting in task_instance[KEY_BASELINES]:
             if setting in ["preamble", "none"]:
                 continue
@@ -87,10 +101,13 @@ async def main(
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--log_dir", type=str, required=True)
+    parser.add_argument("--save_dir", type=str, required=True)
+    parser.add_argument("--repo", type=str, required=True)
     parser.add_argument("--swe_bench_tasks", type=str, required=True)
     parser.add_argument("--namespace", type=str, default="aorwall")
     parser.add_argument("--skip_existing", action="store_true")
     parser.add_argument("--timeout", type=int, default=60)
     parser.add_argument("--num_processes", type=int, default=-1)
+    parser.add_argument("--debug", action="store_true")
     args = parser.parse_args()
     asyncio.run(main(**vars(args)))

@@ -1,5 +1,4 @@
-FROM debian:bookworm-slim
-
+FROM python:3.11-slim-bullseye
 ARG TARGETARCH
 
 # Install third party tools

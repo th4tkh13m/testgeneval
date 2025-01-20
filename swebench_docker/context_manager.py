@@ -495,7 +495,12 @@ class TaskEnvContextManager:
             if log_data:
                 self.log.write(f"{TESTS_TIMEOUT} after {self.timeout} seconds\n")
 
-    def run_tests_task(self, instance: dict, log_data=True, skip_mutation=False):
+    def run_tests_task(
+        self,
+        instance: dict,
+        log_data=True,
+        skip_mutation=False,
+    ):
         """
         Run tests for task instance
 
@@ -533,7 +538,6 @@ class TaskEnvContextManager:
             test_time = end - start
 
             self.log.write(f"TestsTime: {test_time}")
-
             if log_data:
                 # Write pass/fail status to log file
                 if out_test.returncode != 0:
@@ -597,9 +601,9 @@ class TaskEnvContextManager:
 
             if os.path.exists("coverage.json"):
                 os.remove("coverage.json")
-            if os.path.exists(".coverage"):
-                self.log.write("Removing coverage")
-                os.remove(".coverage")
+            # if os.path.exists(".coverage"):
+            #     self.log.write("Removing coverage")
+            #     os.remove(".coverage")
             if os.path.exists(".pytest_cache"):
                 self.log.write("Removing cache")
                 shutil.rmtree(".pytest_cache")

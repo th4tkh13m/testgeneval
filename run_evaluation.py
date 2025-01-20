@@ -6,9 +6,11 @@ import asyncio
 import hashlib
 import logging
 import os
+from rich.pretty import pretty_repr
 
 from swebench_docker.constants import (
     KEY_ID,
+    REPO_ID,
     KEY_INSTANCE_ID,
     KEY_MODEL,
     KEY_PREDICTIONS,
@@ -57,10 +59,13 @@ async def main(
     swe_bench_tasks: str,
     namespace: str,
     log_dir: str,
+    save_dir: str,
+    repo: str = None,
     skip_existing: bool = False,
     timeout: int = 900,
     num_processes: int = -1,
     skip_mutation: bool = False,
+    debug: bool = False,
 ):
     """
     Runs evaluation on predictions for each model/repo/version combination.
@@ -81,11 +86,27 @@ async def main(
     if not os.path.exists(log_dir) or not os.path.isdir(log_dir):
         raise ValueError("--log_dir must exist and point at a directory")
 
+    if not os.path.exists(save_dir) or not os.path.isdir(save_dir):
+        raise ValueError("--log_dir must exist and point at a directory")
+
     # Make sure that the log directory is world-writable so that we can write to it from
     # within the container, even if we're not the root user.
     os.chmod(log_dir, 0o777)
+    os.chmod(save_dir, 0o777)
 
     tasks = list(get_eval_refs(swe_bench_tasks).values())
+
+    if debug:
+        print(f"First task keys: {pretty_repr(tasks[0].keys())}")
+        print(f"Number of tasks: {len(tasks)}")
+        # exit()
+
+    if repo is not None:
+        tasks = [t for t in tasks if t[REPO_ID] == repo]
+
+    if debug:
+        print(f"Number of tasks after filtering by repo: {len(tasks)}")
+        exit()
 
     # Verify arguments are formatted correctly
     if not isinstance(tasks, list):
@@ -195,6 +216,10 @@ if __name__ == "__main__":
         "--log_dir", type=str, help="Path to log directory", required=True
     )
     parser.add_argument(
+        "--save_dir", type=str, help="Path to save results", required=True
+    )
+    parser.add_argument("--repo", type=str, help="Path to save results", required=True)
+    parser.add_argument(
         "--swe_bench_tasks",
         type=str,
         help="Path to dataset file or HF datasets name",
@@ -225,5 +250,6 @@ if __name__ == "__main__":
     parser.add_argument(
         "--skip_mutation", action="store_true", help="(Optional) Skip mutation"
     )
+    parser.add_argument("--debug", action="store_true", help="(Optional) Debugging")
     args = parser.parse_args()
     asyncio.run(main(**vars(args)))
