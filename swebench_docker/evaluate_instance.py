@@ -8,6 +8,11 @@ import os
 import re
 import subprocess
 import sys
+import importlib
+
+if importlib.util.find_spec("coverage") is not None:
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "coverage"])
+
 from typing import Optional, Tuple
 from coverage import CoverageData
 
