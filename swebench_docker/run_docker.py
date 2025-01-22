@@ -173,7 +173,7 @@ async def run_docker_evaluation(
             return task_instance
         else:
             logger.error("task_instance_results.json not found")
-            return task_instance
+            return task_instance, setting
     except Exception as e:
         logger.warning(
             f"[{task_instance['id']}][{docker_image}]  Error running container: {e}"

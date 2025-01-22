@@ -70,6 +70,8 @@ def main(args):
         args.repo,
         "--data_path",
         os.path.join(args.data_path, f"{data_suf}.jsonl"),
+        "--res_path",
+        os.path.join(args.data_path, f"{data_suf}_processed.jsonl"),
     ]
     if args.debug:
         eval_cmd.append("--debug")

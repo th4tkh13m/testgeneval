@@ -2,6 +2,7 @@ import argparse
 import asyncio
 import logging
 import os
+import json
 from rich.pretty import pretty_repr
 from swebench_docker.constants import KEY_BASELINES, KEY_ID, REPO_ID
 from swebench_docker.run_docker import run_docker_evaluation
@@ -15,6 +16,7 @@ logger = logging.getLogger("run_evaluation_baseline")
 
 async def main(
     data_path: str,
+    res_path: str,
     namespace: str,
     log_dir: str,
     repo: str = None,
@@ -55,6 +57,9 @@ async def main(
     if debug:
         tasks = tasks[:1]
         test_case_keys = ["test_case_0"]
+
+    task_dict = {task[KEY_ID]: task for task in tasks}
+
     for task_instance in tasks:
         if debug:
             print(f"An example of task_instance: {pretty_repr(task_instance.keys())}")
@@ -100,7 +105,14 @@ async def main(
                 asyncio_tasks.append(task)
 
     results = await asyncio.gather(*asyncio_tasks)
-    print(f"Evaluation complete: {results[0].keys()}")
+    for result, setting in results:
+        task = task_dict[result[KEY_ID]]
+        task["branches"][setting] = result["branches"][setting]
+
+    with open(res_path, "w") as f:
+        for item in task_dict.values():
+            f.write(json.dumps(item) + "\n")
+    print(f"Evaluation complete: {results[0]['branches']}")
     return results
 
 
@@ -108,6 +120,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--log_dir", type=str, required=True)
     parser.add_argument("--data_path", type=str, required=True)
+    parser.add_argument("--res_path", type=str, required=True)
     parser.add_argument("--repo", type=str, required=True)
     parser.add_argument("--namespace", type=str, default="aorwall")
     parser.add_argument("--timeout", type=int, default=60)
