@@ -128,6 +128,7 @@ class TaskEnvContextManager:
         log_file_name = f"{self.id}.{model}.{setting}.eval.log"
 
         self.log_file = os.path.join(log_dir, log_file_name)
+        self.log_dir = log_dir
         self.log = LogWrapper(
             self.log_file,
             logger=logger_taskenv,
