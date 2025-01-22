@@ -512,7 +512,7 @@ def main(
 
 
 if __name__ == "__main__":
-    os.chmod("/home/swe-bench/", 0o777)
+    os.chmod("/home/swe-bench/task_instance.json", 0o777)
     TASK_INSTANCE_JSON = "/home/swe-bench/task_instance.json"
     if os.path.exists(TASK_INSTANCE_JSON):
         with open(TASK_INSTANCE_JSON, "r") as f:
