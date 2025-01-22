@@ -6,16 +6,16 @@ import json
 import logging
 import os
 import re
+import pip
 import subprocess
 import sys
 import importlib
 
 # install coverage.py
 try:
-    # Install the package
-    subprocess.run(["python", "-m", "pip", "install", "coverage"], check=True)
-    print("Package 'coverage' installed successfully!")
-except subprocess.CalledProcessError as e:
+    pip.main(["install", "coverage"])
+    print(f"Package 'coverage' installed successfully!")
+except Exception as e:
     print(f"An error occurred: {e}")
 
 from typing import Optional, Tuple
