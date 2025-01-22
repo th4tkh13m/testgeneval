@@ -105,14 +105,14 @@ async def main(
                 asyncio_tasks.append(task)
 
     results = await asyncio.gather(*asyncio_tasks)
-    for result, setting in results:
-        task = task_dict[result[KEY_ID]]
-        task["branches"][setting] = result["branches"][setting]
+    for result in results:
+        res, setting = result
+        task_dict[result[KEY_ID]]["branches"][setting] = res["branches"][setting]
 
     with open(res_path, "w") as f:
         for item in task_dict.values():
             f.write(json.dumps(item) + "\n")
-    print(f"Evaluation complete: {results[0]['branches']}")
+    print(f"Evaluation complete: {res['branches']}")
     return results
 
 
