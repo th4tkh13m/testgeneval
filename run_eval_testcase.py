@@ -42,8 +42,7 @@ async def main(
         # exit()
     if repo != "all":
         tasks = [t for t in tasks if t[REPO_ID] == repo]
-    if debug:
-        print(f"Number of tasks after filtering by repo: {len(tasks)}")
+    print(f"Number of tasks after filtering by repo: {len(tasks)}")
 
     num_test_case = 0
     for task in tasks:
@@ -114,7 +113,7 @@ async def main(
     with open(res_path, "w") as f:
         for item in task_dict.values():
             f.write(json.dumps(item) + "\n")
-    print(f"Evaluation complete: {res['branches']}")
+    # print(f"Evaluation complete: {res['branches']}")
     return results
 
 
