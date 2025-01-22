@@ -113,7 +113,7 @@ async def main(
     with open(res_path, "w") as f:
         for item in task_dict.values():
             f.write(json.dumps(item) + "\n")
-    # print(f"Evaluation complete: {res['branches']}")
+    print(f"Evaluation complete")
     return results
 
 
