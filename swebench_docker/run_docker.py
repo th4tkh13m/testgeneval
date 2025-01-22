@@ -73,11 +73,11 @@ async def run_docker_evaluation(
             # for some reason, swebench_docker has different locations for the different containers :(
             # so we need to map all of them to make it work
             "-v",
-            f"{swebench_docker_fork_dir}/swebench_docker:/opt/swebench_docker:ro",
+            f"{swebench_docker_fork_dir}/swebench_docker:/opt/swebench_docker",
             "-v",
-            f"{swebench_docker_fork_dir}/swebench_docker:/home/swe-bench/swebench_docker:ro",
+            f"{swebench_docker_fork_dir}/swebench_docker:/home/swe-bench/swebench_docker",
             "-v",
-            f"{swebench_docker_fork_dir}/swebench_docker:/home/swe-bench/swebench:ro",
+            f"{swebench_docker_fork_dir}/swebench_docker:/home/swe-bench/swebench",
             # =======
             # Map file instead pass the instance as env var to avoid "Argument list too long" error
             "-v",

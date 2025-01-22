@@ -10,8 +10,8 @@ import subprocess
 import sys
 import importlib
 
-if importlib.util.find_spec("coverage") is not None:
-    subprocess.check_call([sys.executable, "-m", "pip", "install", "coverage"])
+# install coverage.py
+subprocess.check_call([sys.executable, "-m", "pip", "install", "coverage"])
 
 from typing import Optional, Tuple
 from coverage import CoverageData
@@ -218,10 +218,12 @@ def postprocess_tests(
                 debug=None,
             )
             data.read()
-            logger.info(f"Testing for code file: {task_instance['code_file']}")
+            prefix = "/".join(os.getcwd().split("/")[:3])
+            code_file_name = os.path.join(prefix, task_instance["code_file"])
+            logger.info(f"Testing for code file: {code_file_name}")
             logger.info(f"Coverage data: {data._file_map}")
 
-            arcs = data.arcs(filename=task_instance[KEY_INSTANCE_ID])
+            arcs = data.arcs(filename=code_file_name)
             if arcs is None:
                 logger.info(f"Arcs not found")
             else:
@@ -298,10 +300,12 @@ def postprocess_functions(
                 debug=None,
             )
             data.read()
-            logger.info(f"Testing for code file: {task_instance['code_file']}")
+            prefix = "/".join(os.getcwd().split("/")[:3])
+            code_file_name = os.path.join(prefix, task_instance["code_file"])
+            logger.info(f"Testing for code file: {code_file_name}")
             logger.info(f"Coverage data: {data._file_map}")
 
-            arcs = data.arcs(filename=task_instance[KEY_INSTANCE_ID])
+            arcs = data.arcs(filename=code_file_name)
             if arcs is None:
                 logger.info(f"Arcs not found")
             else:
@@ -492,8 +496,8 @@ def main(
                 else task_instance[KEY_PREDICTIONS][setting]
             )
         else:
-            prompt_list = [task_instance["testcases"][setting]]
-        if setting == "full":
+            prompt_list = [task_instance["test_cases"][setting]]
+        if setting == "full" or "test_case" in setting:
             full_processing(
                 prompt_list, tcm, task_instance, skip_mutation, setting=setting
             )
