@@ -218,7 +218,7 @@ def postprocess_tests(
                 debug=None,
             )
             data.read()
-            prefix = "/".join(os.getcwd().split("/")[:3])
+            prefix = os.getcwd()
             code_file_name = os.path.join(prefix, task_instance["code_file"])
             logger.info(f"Testing for code file: {code_file_name}")
             logger.info(f"Dir: {os.getcwd()} {os.listdir()}")
@@ -512,6 +512,7 @@ def main(
 
 
 if __name__ == "__main__":
+    os.chmod("/home/swe-bench/", 0o777)
     TASK_INSTANCE_JSON = "/home/swe-bench/task_instance.json"
     if os.path.exists(TASK_INSTANCE_JSON):
         with open(TASK_INSTANCE_JSON, "r") as f:
