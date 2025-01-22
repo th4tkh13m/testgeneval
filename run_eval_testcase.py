@@ -100,7 +100,7 @@ async def main(
                 asyncio_tasks.append(task)
 
     results = await asyncio.gather(*asyncio_tasks)
-    print(f"Evaluation complete: {results[0]['branches']}")
+    print(f"Evaluation complete: {results[0].keys()}")
     return results
 
 
