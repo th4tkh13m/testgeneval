@@ -167,6 +167,9 @@ async def run_docker_evaluation(
         if os.path.join(log_dir, "task_instance_results.json").exists():
             with open(os.path.join(log_dir, "task_instance_results.json"), "r") as f:
                 task_instance = json.load(f)
+                logger.info(
+                    f"Task instance {task_instance['id']} loaded from task_instance_results.json"
+                )
             return task_instance
         else:
             logger.error("task_instance_results.json not found")
