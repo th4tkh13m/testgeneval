@@ -116,7 +116,7 @@ class Data(object):
             branches[key] = []
         return {
             "repo": repo,
-            "commit_id": commit_id,
+            "base_commit": commit_id,
             "version": version,
             "instance_id": instance_id,
             "patch": patch,
