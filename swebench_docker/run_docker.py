@@ -164,7 +164,7 @@ async def run_docker_evaluation(
                 f"[{task_instance['id']}][{docker_image}]  Container ran successfully in {elapsed_time} seconds."
             )
         # read task instance from tmpfile_path
-        if os.path.join(log_dir, "task_instance_results.json").exists():
+        if os.path.exists(os.path.join(log_dir, "task_instance_results.json")):
             with open(os.path.join(log_dir, "task_instance_results.json"), "r") as f:
                 task_instance = json.load(f)
                 logger.info(
