@@ -108,6 +108,7 @@ async def main(
     for result in results:
         # print(result)
         res, setting = result
+        print(setting)
         task_dict[result[KEY_ID]]["branches"][setting] = res["branches"][setting]
 
     with open(res_path, "w") as f:
