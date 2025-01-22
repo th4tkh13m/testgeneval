@@ -221,6 +221,7 @@ def postprocess_tests(
             prefix = "/".join(os.getcwd().split("/")[:3])
             code_file_name = os.path.join(prefix, task_instance["code_file"])
             logger.info(f"Testing for code file: {code_file_name}")
+            logger.info(f"Dir: {os.getcwd()} {os.listdir()}")
             logger.info(f"Coverage data: {data._file_map}")
 
             arcs = data.arcs(filename=code_file_name)
@@ -303,6 +304,7 @@ def postprocess_functions(
             prefix = "/".join(os.getcwd().split("/")[:3])
             code_file_name = os.path.join(prefix, task_instance["code_file"])
             logger.info(f"Testing for code file: {code_file_name}")
+            logger.info(f"Dir: {os.getcwd()} {os.listdir()}")
             logger.info(f"Coverage data: {data._file_map}")
 
             arcs = data.arcs(filename=code_file_name)
