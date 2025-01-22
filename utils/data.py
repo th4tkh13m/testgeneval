@@ -1,5 +1,6 @@
 import os
 import json
+from tqdm import tqdm
 from utils.utils import (
     extract_preamble_classes_and_functions,
     postprocess_functions,
@@ -59,18 +60,16 @@ class Data(object):
         data_list = []
         num_test_cases = 0
         num_data_point = 0
-        for i in range(len(self.dataset)):
-            data = self.dataset[i]
-            processed_data = self.process_one_raw(data)
-            data_list.append(processed_data)
-            num_data_point += 1
-            num_test_cases += len(processed_data["test_cases"])
-        # save to jsonl
         with open(
             os.path.join(self.save_path, f"{self.data_name.split('/')[-1]}.jsonl"), "w"
         ) as f:
-            for item in data_list:
-                f.write(json.dumps(item) + "\n")
+            for i in tqdm(range(len(self.dataset))):
+                data = self.dataset[i]
+                processed_data = self.process_one_raw(data)
+                data_list.append(processed_data)
+                num_data_point += 1
+                num_test_cases += len(processed_data["test_cases"])
+                f.write(json.dumps(processed_data) + "\n")
         self.console.log(
             f"Num data points: {num_data_point}, num test cases: {num_test_cases}"
         )
