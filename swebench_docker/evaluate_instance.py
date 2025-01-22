@@ -11,7 +11,12 @@ import sys
 import importlib
 
 # install coverage.py
-subprocess.run(["python", "-m", "pip", "install", "coverage"], shell=True, check=True)
+try:
+    # Install the package
+    subprocess.run(["python", "-m", "pip", "install", "coverage"], check=True)
+    print("Package 'coverage' installed successfully!")
+except subprocess.CalledProcessError as e:
+    print(f"An error occurred: {e}")
 
 from typing import Optional, Tuple
 from coverage import CoverageData
