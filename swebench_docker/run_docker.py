@@ -58,7 +58,7 @@ async def run_docker_evaluation(
     if swebench_docker_fork_dir:
         # Create a temporary file to store the task_instance JSON
         tmpfile_path = tempfile.mktemp(suffix=".json")
-        with open(tmpfile_path, "w+") as f:
+        with open(tmpfile_path, "w") as f:
             json.dump(task_instance, f)
 
         docker_command = [
@@ -164,11 +164,12 @@ async def run_docker_evaluation(
                 f"[{task_instance['id']}][{docker_image}]  Container ran successfully in {elapsed_time} seconds."
             )
         # read task instance from tmpfile_path
-        if swebench_docker_fork_dir:
-            with open(tmpfile_path, "r") as f:
+        if os.path.join(log_dir, "task_instance_results.json").exists():
+            with open(os.path.join(log_dir, "task_instance_results.json"), "r") as f:
                 task_instance = json.load(f)
             return task_instance
         else:
+            logger.error("task_instance_results.json not found")
             return task_instance
     except Exception as e:
         logger.warning(
