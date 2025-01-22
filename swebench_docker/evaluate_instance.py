@@ -362,7 +362,7 @@ def full_processing(prompt_list, tcm, task_instance, skip_mutation, setting: str
             )
 
         # save task_instance
-        with open("/home/swe-bench/task_instance.json", "w") as f:
+        with open("/home/swe-bench/task_instance_results.json", "w") as f:
             json.dump(task_instance, f)
 
         tcm.log.write(f"{TESTS_CONFIG}full pred\n")
@@ -512,7 +512,7 @@ def main(
 
 
 if __name__ == "__main__":
-    os.chmod("/home/swe-bench/task_instance.json", 0o777)
+    # os.chmod("/home/swe-bench/task_instance.json", 0o777)
     TASK_INSTANCE_JSON = "/home/swe-bench/task_instance.json"
     if os.path.exists(TASK_INSTANCE_JSON):
         with open(TASK_INSTANCE_JSON, "r") as f:
