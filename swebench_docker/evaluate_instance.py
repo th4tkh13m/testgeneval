@@ -11,7 +11,7 @@ import sys
 import importlib
 
 # install coverage.py
-subprocess.check_call(["python", "-m", "pip", "install", "coverage"])
+subprocess.run(["python", "-m", "pip", "install", "coverage"])
 
 from typing import Optional, Tuple
 from coverage import CoverageData
