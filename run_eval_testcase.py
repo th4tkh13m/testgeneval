@@ -106,7 +106,7 @@ async def main(
 
     results = await asyncio.gather(*asyncio_tasks)
     for result in results:
-        print(result)
+        # print(result)
         res, setting = result
         task_dict[result[KEY_ID]]["branches"][setting] = res["branches"][setting]
 
