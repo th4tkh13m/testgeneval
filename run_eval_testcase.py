@@ -40,7 +40,7 @@ async def main(
         print(f"First task keys: {pretty_repr(tasks[0].keys())}")
         print(f"Number of tasks: {len(tasks)}")
         # exit()
-    if repo is not None:
+    if repo != "all":
         tasks = [t for t in tasks if t[REPO_ID] == repo]
     if debug:
         print(f"Number of tasks after filtering by repo: {len(tasks)}")
