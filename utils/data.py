@@ -2,6 +2,7 @@ import os
 import json
 import asyncio
 import aiofiles
+import datetime
 from tqdm.asyncio import tqdm
 from utils.utils import (
     extract_preamble_classes_and_functions,
@@ -161,7 +162,8 @@ class Data(object):
             ) as f:
                 await f.write(json.dumps(processed_data) + "\n")
 
-            self.console.log(f"Done {idx}")
+            current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            self.console.log(f"Done {idx} at {current_time}")
             return len(processed_data["test_cases"].keys())
 
     # def get_branches(self):
