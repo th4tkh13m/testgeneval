@@ -43,13 +43,17 @@ def main(args):
         data_name=args.dataset,
         save_path=args.data_path,
         console=console,
+        num_processes=args.num_processes,
         data_path=None,
     )
     dataset.load_raw_data()
-    dataset.process_raw_data()
+    dataset.process_data()
 
     if args.debug:
         console.log("Debug mode on")
+
+    if args.process_data_only:
+        exit(0)
 
     # Run LLM translate
     # if not args.skip_translate:
@@ -136,6 +140,9 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "--skip_mutation", action="store_true", help="(Optional) Skip LLM translation"
+    )
+    parser.add_argument(
+        "--process_data_only", action="store_true", help="Only process data"
     )
     parser.add_argument("--debug", action="store_true", help="(Optional) Debug mode")
     args = parser.parse_args()
