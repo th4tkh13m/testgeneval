@@ -62,6 +62,11 @@ class Data(object):
         self.console.log(f"Data {self.data_name} loaded successfully")
 
     def process_data(self) -> None:
+        if os.path.exists(
+            os.path.join(self.save_path, f"{self.data_name.split('/')[-1]}.jsonl")
+        ):
+            self.console.log(f"Data {self.data_name} already processed")
+            return
         asyncio.run(self.process_raw_data())
 
     async def process_raw_data(self) -> None:
