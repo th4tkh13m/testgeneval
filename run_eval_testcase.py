@@ -106,8 +106,10 @@ async def main(
     results = await asyncio.gather(*asyncio_tasks)
     for result in results:
         # print(result)
+        if result is None:
+            continue
         res, setting = result
-        print(setting)
+        # print(setting)
         task_dict[res[KEY_ID]]["branches"][setting] = res["branches"][setting]
 
     with open(res_path, "w") as f:

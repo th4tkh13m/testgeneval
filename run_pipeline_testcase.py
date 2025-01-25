@@ -61,25 +61,29 @@ def main(args):
 
     # Run evaluation
     # dataset.extract_branch()
-    eval_cmd = [
-        "python",
-        "run_eval_testcase.py",
-        "--log_dir",
-        log_dir,
-        "--num_processes",
-        str(args.num_processes),
-        "--namespace",
-        args.namespace,
-        "--repo",
-        args.repo,
-        "--data_path",
-        os.path.join(args.data_path, f"{data_suf}.jsonl"),
-        "--res_path",
-        os.path.join(args.data_path, f"{data_suf}_processed.jsonl"),
-    ]
-    if args.debug:
-        eval_cmd.append("--debug")
-    subprocess.run(eval_cmd)
+    if args.get_ground_truth_branch:
+        eval_cmd = [
+            "python",
+            "run_eval_testcase.py",
+            "--log_dir",
+            log_dir,
+            "--num_processes",
+            str(args.num_processes),
+            "--namespace",
+            args.namespace,
+            "--repo",
+            args.repo,
+            "--data_path",
+            os.path.join(args.data_path, f"{data_suf}.jsonl"),
+            "--res_path",
+            os.path.join(args.data_path, f"{data_suf}_processed.jsonl"),
+        ]
+        if args.debug:
+            eval_cmd.append("--debug")
+        subprocess.run(eval_cmd)
+
+    if args.translate:
+        pass
 
 
 if __name__ == "__main__":
@@ -133,7 +137,7 @@ if __name__ == "__main__":
         "--num_processes", type=int, help="Number of processes to run", default=1
     )
     parser.add_argument(
-        "--skip_translate", action="store_true", help="(Optional) Skip LLM translation"
+        "--translate", action="store_true", help="(Optional) Skip LLM translation"
     )
     parser.add_argument(
         "--rerun_eval", action="store_true", help="(Optional) Skip LLM translation"
@@ -143,6 +147,11 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "--process_data_only", action="store_true", help="Only process data"
+    )
+    parser.add_argument(
+        "--get_ground_truth_branch",
+        action="store_true",
+        help="Extract ground truth branch from human testcases",
     )
     parser.add_argument("--debug", action="store_true", help="(Optional) Debug mode")
     args = parser.parse_args()
