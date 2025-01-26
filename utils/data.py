@@ -145,7 +145,10 @@ class Data(object):
                 test_cases=test_cases,
             )
 
-            max_id = max([x.split("_")[-1] for x in test_cases.keys()])
+            if len(test_cases) > 0:
+                max_id = max([int(x.split("_")[-1]) for x in test_cases.keys()])
+            else:
+                max_id = 0
             self.console.log(
                 f"# of test cases: {len(test_cases.keys())}, and max id: {max_id}"
             )
