@@ -123,6 +123,7 @@ class Data(object):
             preamble, classes, test_functions = extract_preamble_classes_and_functions(
                 code=test_src
             )
+            self.console.log(f"==================== {idx} ====================")
             test_cases = {}
             for class_name, methods, start in classes:
                 test_cases = postprocess_tests(
@@ -132,11 +133,10 @@ class Data(object):
                     methods=methods,
                     test_cases=test_cases,
                 )
-            self.console.log(f"==================== {idx} ====================")
-            max_id = max([x.split("_")[-1] for x in test_cases.keys()])
-            self.console.log(
-                f"# of test cases: {len(test_cases.keys())}, and max id: {max_id}"
-            )
+                max_id = max([x.split("_")[-1] for x in test_cases.keys()])
+                self.console.log(
+                    f"# of test cases: {len(test_cases.keys())}, and max id: {max_id}"
+                )
 
             test_cases = postprocess_functions(
                 repo=repo,
