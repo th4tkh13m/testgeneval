@@ -133,7 +133,7 @@ class Data(object):
                     methods=methods,
                     test_cases=test_cases,
                 )
-                max_id = max([x.split("_")[-1] for x in test_cases.keys()])
+                max_id = max([int(x.split("_")[-1]) for x in test_cases.keys()])
                 self.console.log(
                     f"# of test cases: {len(test_cases.keys())}, and max id: {max_id}"
                 )
