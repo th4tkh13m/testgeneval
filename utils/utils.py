@@ -156,9 +156,7 @@ def postprocess_tests(
         added_class = False
 
     test_id = len(test_cases.keys())
-    print(
-        f"Processing {class_name} with {len(methods)} methods, id begins at {test_id}"
-    )
+    print(f"Processing with {len(methods)} methods, id begins at {test_id}")
     for method_name, test_case in methods:
         if django_repo and added_class:
             if "(self):" not in test_case:
