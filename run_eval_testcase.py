@@ -109,7 +109,13 @@ async def main(
         if result is None:
             continue
         res, setting = result
-        # print(setting)
+        logger.info(f"================== Task {res[KEY_ID]} ==================")
+        logger.info(
+            f"Task {task_dict[res[KEY_ID]]} orignally has {len(task_dict[res[KEY_ID]]['branches'])} branches and {len(task_dict[res[KEY_ID]]['test_cases'])} test cases"
+        )
+        logger.info(
+            f"Results {res[KEY_ID]} orignally has {len(res['branches'])} branches and {len(res['test_cases'])} test cases"
+        )
         task_dict[res[KEY_ID]]["branches"][setting] = res["branches"][setting]
 
     with open(res_path, "w") as f:
