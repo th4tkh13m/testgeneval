@@ -166,8 +166,8 @@ def postprocess_tests(
         test_content = preamble + "\n\n" + class_content
 
         test_cases[f"test_case_{test_id}"] = test_content
-        test_id += 1
         print(f"Added test case {test_id}")
+        test_id += 1
 
     return test_cases
 
