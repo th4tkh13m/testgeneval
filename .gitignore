@@ -8,6 +8,7 @@ __pycache__/
 ./data/
 *.stamp
 data
+results
 # Distribution / packaging
 .Python
 build/
