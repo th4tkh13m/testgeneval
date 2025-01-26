@@ -132,6 +132,11 @@ class Data(object):
                     methods=methods,
                     test_cases=test_cases,
                 )
+            self.console.log(f"==================== {idx} ====================")
+            max_id = max([x.split("_")[-1] for x in test_cases.keys()])
+            self.console.log(
+                f"# of test cases: {len(test_cases.keys())}, and max id: {max_id}"
+            )
 
             test_cases = postprocess_functions(
                 repo=repo,
@@ -139,6 +144,12 @@ class Data(object):
                 test_functions=test_functions,
                 test_cases=test_cases,
             )
+
+            max_id = max([x.split("_")[-1] for x in test_cases.keys()])
+            self.console.log(
+                f"# of test cases: {len(test_cases.keys())}, and max id: {max_id}"
+            )
+
             branches = {}
             for key in test_cases.keys():
                 branches[key] = []
@@ -169,11 +180,6 @@ class Data(object):
 
             current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             self.console.log(f"Done {idx} at {current_time}")
-
-            max_id = max([x.split("_")[-1] for x in test_cases.keys()])
-            self.console.log(
-                f"# of test cases: {len(test_cases.keys())}, and max id: {max_id}"
-            )
             return len(processed_data["test_cases"].keys())
 
     # def get_branches(self):
