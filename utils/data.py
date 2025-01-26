@@ -169,6 +169,11 @@ class Data(object):
 
             current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             self.console.log(f"Done {idx} at {current_time}")
+
+            max_id = max([x.split("_")[-1] for x in test_cases.keys()])
+            self.console.log(
+                f"# of test cases: {len(test_cases.keys())}, and max id: {max_id}"
+            )
             return len(processed_data["test_cases"].keys())
 
     # def get_branches(self):

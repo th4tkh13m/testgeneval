@@ -111,7 +111,7 @@ async def main(
         res, setting = result
         logger.info(f"================== Task {res[KEY_ID]} ==================")
         logger.info(
-            f"Task {task_dict[res[KEY_ID]]} orignally has {len(task_dict[res[KEY_ID]]['branches'])} branches and {len(task_dict[res[KEY_ID]]['test_cases'])} test cases"
+            f"Task {res[KEY_ID]} orignally has {len(task_dict[res[KEY_ID]]['branches'])} branches and {len(task_dict[res[KEY_ID]]['test_cases'])} test cases"
         )
         logger.info(
             f"Results {res[KEY_ID]} orignally has {len(res['branches'])} branches and {len(res['test_cases'])} test cases"
