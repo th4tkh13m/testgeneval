@@ -336,6 +336,7 @@ def postprocess_functions(
                         visited.append(e[0])
                         visited.append(e[1])
                 task_instance["branches"][setting] = branches
+                logger.info(f"====================== Branches: {branches}")
 
                 if os.path.exists(".coverage"):
                     logger.info("Removing coverage")
