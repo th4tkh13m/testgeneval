@@ -9,6 +9,7 @@ import re
 import pip
 import subprocess
 import sys
+import tempfile
 import importlib
 
 # install coverage.py
@@ -24,6 +25,7 @@ from coverage import CoverageData
 from swebench_docker.constants import (
     KEY_BASELINES,
     KEY_MODEL,
+    KEY_ID,
     KEY_INSTANCE_ID,
     KEY_PREDICTIONS,
     KEY_TEST_FILE_PATH,
@@ -367,7 +369,8 @@ def full_processing(prompt_list, tcm, task_instance, skip_mutation, setting: str
             )
 
         # save task_instance
-        with open(os.path.join(tcm.log_dir, "task_instance_results.json"), "w") as f:
+        # tmpfile_path = tempfile.mktemp(suffix=".json")
+        with open(os.path.join(tcm.log_dir, f"{task_instance[KEY_ID]}.json"), "w") as f:
             json.dump(task_instance, f)
 
         tcm.log.write(f"{TESTS_CONFIG}full pred\n")

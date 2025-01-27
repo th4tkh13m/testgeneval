@@ -11,7 +11,7 @@ import tempfile
 import time
 
 import dotenv
-from swebench_docker.constants import MAP_VERSION_TO_INSTALL
+from swebench_docker.constants import MAP_VERSION_TO_INSTALL, KEY_ID
 from typing import Dict
 
 logger = logging.getLogger(__name__)
@@ -164,11 +164,11 @@ async def run_docker_evaluation(
                 f"[{task_instance['id']}][{docker_image}]  Container ran successfully in {elapsed_time} seconds."
             )
         # read task instance from tmpfile_path
-        if os.path.exists(os.path.join(log_dir, "task_instance_results.json")):
-            with open(os.path.join(log_dir, "task_instance_results.json"), "r") as f:
+        if os.path.exists(os.path.join(log_dir, f"{task_instance[KEY_ID]}.json")):
+            with open(os.path.join(log_dir, f"{task_instance[KEY_ID]}.json"), "r") as f:
                 task_instance = json.load(f)
                 logger.info(
-                    f"Task instance {task_instance['id']} loaded from task_instance_results.json"
+                    f"Task instance {task_instance['id']} loaded from {task_instance[KEY_ID]}.json"
                 )
             return task_instance, setting
         else:
