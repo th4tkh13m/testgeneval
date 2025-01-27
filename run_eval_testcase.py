@@ -136,6 +136,23 @@ async def main(
         for item in task_dict.values():
             f.write(json.dumps(item) + "\n")
     print(f"Evaluation complete")
+
+    try:
+        # List all files in the directory
+        files = os.listdir(log_dir)
+        # Iterate through the files
+        for file in files:
+            # Construct full file path
+            file_path = os.path.join(log_dir, file)
+
+            # Check if the file has a .json extension and is a file
+            if file.endswith(".json") and os.path.isfile(file_path):
+                os.remove(file_path)
+                print(f"Deleted: {file_path}")
+        print("All .json files have been deleted.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
     return results
 
 
