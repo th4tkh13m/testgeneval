@@ -83,7 +83,29 @@ def main(args):
         subprocess.run(eval_cmd)
 
     if args.translate:
-        pass
+        eval_cmd = [
+            "python",
+            "run_translate.py",
+            "--log_dir",
+            log_dir,
+            "--repo",
+            args.repo,
+            "--data_path",
+            os.path.join(args.data_path, f"{data_suf}_processed.jsonl"),
+            "--res_path",
+            os.path.join(args.data_path, f"{data_suf}_translated.jsonl"),
+            "--model",
+            args.model,
+            "--temperature",
+            str(args.temperature),
+            "--host",
+            args.host,
+            "--port",
+            args.port,
+        ]
+        if args.debug:
+            eval_cmd.append("--debug")
+        subprocess.run(eval_cmd)
 
 
 if __name__ == "__main__":
@@ -129,6 +151,20 @@ if __name__ == "__main__":
         help="Path to the data",
         required=False,
         default="./data",
+    )
+    parser.add_argument(
+        "--host",
+        type=str,
+        help="host to the model",
+        required=False,
+        default="localhost",
+    )
+    parser.add_argument(
+        "--port",
+        type=str,
+        help="port of the server to the model",
+        required=False,
+        default="2605",
     )
     parser.add_argument(
         "--temperature", type=float, help="(Optional) Model temperature", default=0.2
