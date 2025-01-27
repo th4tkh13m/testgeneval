@@ -85,7 +85,7 @@ def main(args):
     if args.translate:
         eval_cmd = [
             "python",
-            "run_translate.py",
+            "run_translation.py",
             "--log_dir",
             log_dir,
             "--repo",
