@@ -168,7 +168,10 @@ async def run_docker_evaluation(
             with open(os.path.join(log_dir, f"{task_instance[KEY_ID]}.json"), "r") as f:
                 task_instance = json.load(f)
                 logger.info(
-                    f"Task instance {task_instance['id']} loaded from {task_instance[KEY_ID]}.json"
+                    f"Task instance {task_instance[KEY_ID]} loaded from {task_instance[KEY_ID]}.json"
+                )
+                logger.info(
+                    f"Task instance branches: {task_instance[KEY_ID]['branches']}"
                 )
             return task_instance, setting
         else:
