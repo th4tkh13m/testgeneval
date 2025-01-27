@@ -9,7 +9,8 @@ import re
 import pip
 import subprocess
 import sys
-import tempfile
+
+# import tempfile
 import importlib
 
 # install coverage.py
