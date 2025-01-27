@@ -170,9 +170,7 @@ async def run_docker_evaluation(
                 logger.info(
                     f"Task instance {task_instance[KEY_ID]} loaded from {task_instance[KEY_ID]}.json"
                 )
-                logger.info(
-                    f"Task instance branches: {task_instance[KEY_ID]['branches']}"
-                )
+                logger.info(f"Task instance branches: {task_instance['branches']}")
             return task_instance, setting
         else:
             logger.error("task_instance_results.json not found")
