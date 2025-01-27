@@ -128,7 +128,9 @@ async def main(
         logger.info(
             f"Results {res[KEY_ID]} orignally has {len(res['branches'])} branches and {len(res['test_cases'])} test cases"
         )
-        task_dict[res[KEY_ID]]["branches"][setting] = res["branches"][setting]
+        for key in res["branches"].keys():
+            task_dict[res[KEY_ID]]["test_cases"][key] = res["test_cases"][key]
+        # task_dict[res[KEY_ID]]["branches"][setting] = res["branches"][setting]
 
     with open(res_path, "w") as f:
         for item in task_dict.values():
