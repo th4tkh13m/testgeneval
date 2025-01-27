@@ -123,7 +123,7 @@ class Data(object):
             preamble, classes, test_functions = extract_preamble_classes_and_functions(
                 code=test_src
             )
-            self.console.log(f"==================== {idx} ====================")
+            # self.console.log(f"==================== {idx} ====================")
             test_cases = {}
             for class_name, methods, start in classes:
                 test_cases = postprocess_tests(

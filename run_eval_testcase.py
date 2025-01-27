@@ -92,7 +92,7 @@ async def main(
                         ]
                     )
                     logger.info(
-                        f"# of test cases: {len(task_instance["test_cases"].keys())}, and max id: {max_id}, {max_id == len(task_instance["test_cases"].keys()) - 1}"
+                        f"# of test cases: {len(task_instance['test_cases'].keys())}, and max id: {max_id}, {max_id == len(task_instance['test_cases'].keys()) - 1}"
                     )
                 else:
                     self.console.log(f"No test cases found for {task_instance[KEY_ID]}")
