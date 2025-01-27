@@ -163,6 +163,9 @@ class Data(object):
                 "branches": branches,
             }
 
+            if len(processed_data["test_cases"].keys()) == 0:
+                self.console.log(f"No test cases found for {idx}")
+
             async with aiofiles.open(
                 os.path.join(self.save_path, f"{self.data_name.split('/')[-1]}.jsonl"),
                 "a",
