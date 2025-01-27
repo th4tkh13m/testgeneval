@@ -133,10 +133,6 @@ class Data(object):
                     methods=methods,
                     test_cases=test_cases,
                 )
-                max_id = max([int(x.split("_")[-1]) for x in test_cases.keys()])
-                self.console.log(
-                    f"# of test cases: {len(test_cases.keys())}, and max id: {max_id}"
-                )
 
             test_cases = postprocess_functions(
                 repo=repo,
@@ -147,11 +143,12 @@ class Data(object):
 
             if len(test_cases) > 0:
                 max_id = max([int(x.split("_")[-1]) for x in test_cases.keys()])
+                self.console.log(
+                    f"# of test cases: {len(test_cases.keys())}, and max id: {max_id}, {max_id == len(test_cases.keys()) - 1}"
+                )
             else:
+                self.console.log(f"No test cases found for {idx}")
                 max_id = 0
-            self.console.log(
-                f"# of test cases: {len(test_cases.keys())}, and max id: {max_id}"
-            )
 
             branches = {}
             for key in test_cases.keys():
