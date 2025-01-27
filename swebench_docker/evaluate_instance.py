@@ -317,7 +317,7 @@ def postprocess_functions(
 
             arcs = data.arcs(filename=code_file_name)
             if arcs is None:
-                logger.info(f"Arcs not found")
+                logger.info(f"\n\nArcs not found\n\n")
             else:
                 branches = []
                 visited = []
