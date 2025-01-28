@@ -1,4 +1,4 @@
-FROM python:3.11-slim-bullseye
+FROM debian:bookworm-slim
 
 ENV PYENV_ROOT="/opt/pyenv"
 ENV PATH="${PYENV_ROOT}/shims:${PYENV_ROOT}/bin:$PATH"

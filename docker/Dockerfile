@@ -1,10 +1,10 @@
-FROM python:3.11-slim-bullseye
+FROM debian:bookworm-slim
 
 ARG TARGETARCH
 
 # Install third party tools
 RUN apt-get update && \
-    apt-get install -y bash gcc git jq wget g++ make libffi-dev build-essential && \
+    apt-get install -y bash gcc git jq wget g++ make libffi-dev build-essential python3.11 && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
@@ -18,11 +18,11 @@ USER swe-bench
 # Setup Conda
 ENV PATH="/home/swe-bench/miniconda3/bin:${PATH}"
 
-#RUN if [ "$TARGETARCH" = "amd64" ]; then \
-RUN        wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-py311_24.3.0-0-Linux-x86_64.sh -O ~/miniconda.sh; \
- #   elif [ "$TARGETARCH" = "arm64" ]; then \
-  #      wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-py311_24.3.0-0-Linux-aarch64.sh -O ~/miniconda.sh; \
-#    fi && \
+RUN if [ "$TARGETARCH" = "amd64" ]; then \
+        wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-py311_24.3.0-0-Linux-x86_64.sh -O ~/miniconda.sh; \
+    elif [ "$TARGETARCH" = "arm64" ]; then \
+        wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-py311_24.3.0-0-Linux-aarch64.sh -O ~/miniconda.sh; \
+    fi && \
     mkdir ~/.conda && \
     bash miniconda.sh -b && \
     rm ~/miniconda.sh
