@@ -56,6 +56,7 @@ async def main(
     if debug:
         tasks = tasks[:1]
         test_case_keys = ["test_case_0"]
+        print(f"Task: {tasks[0][KEY_ID]}")
 
     task_dict = {task[KEY_ID]: task for task in tasks}
 
