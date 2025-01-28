@@ -23,6 +23,20 @@ try:
 except subprocess.CalledProcessError as e:
     print(f"Failed to install 'coverage': {e.stderr.decode().strip()}")
 
+# install pytest
+try:
+    # Run the pip command to install the coverage package quietly
+    result = subprocess.run(
+        [sys.executable, "-m", "pip", "install", "pytest", "--quiet"],
+        check=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+    print("'pytest' package installed successfully.")
+
+except subprocess.CalledProcessError as e:
+    print(f"Failed to install 'coverage': {e.stderr.decode().strip()}")
+
 from typing import Optional, Tuple
 from coverage import CoverageData
 
