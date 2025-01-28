@@ -45,17 +45,18 @@ class Data(object):
 
     def load_raw_data(self) -> None:
         if self.data_path is None:
-            if self.data_name == "kjain14/testgeneval":
-                train_dataset = load_dataset(self.data_name, split="train")
-                valid_dataset = load_dataset(self.data_name, split="dev")
-                test_dataset = load_dataset(self.data_name, split="test")
-                dataset = concatenate_datasets(
-                    [train_dataset, valid_dataset, test_dataset]
-                )
-            elif self.data_name == "kjain14/testgenevallite":
-                valid_dataset = load_dataset(self.data_name, split="dev")
-                test_dataset = load_dataset(self.data_name, split="test")
-                dataset = concatenate_datasets([valid_dataset, test_dataset])
+            # if self.data_name == "kjain14/testgeneval":
+            #     # train_dataset = load_dataset(self.data_name, split="train")
+            #     # valid_dataset = load_dataset(self.data_name, split="dev")
+            #     dataset = load_dataset(self.data_name, split="test")
+            #     dataset = concatenate_datasets(
+            #         [train_dataset, valid_dataset, test_dataset]
+            #     )
+            # elif self.data_name == "kjain14/testgenevallite":
+            #     valid_dataset = load_dataset(self.data_name, split="dev")
+            #     test_dataset = load_dataset(self.data_name, split="test")
+            #     dataset = concatenate_datasets([valid_dataset, test_dataset])
+            dataset = load_dataset(self.data_name, split="test")
         else:
             dataset = load_from_disk(self.data_path)
         self.dataset = dataset
