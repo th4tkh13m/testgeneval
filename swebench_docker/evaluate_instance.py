@@ -269,7 +269,10 @@ def postprocess_tests(
                         branches.append([e[0], e[1]])
                         visited.append(e[0])
                         visited.append(e[1])
-                task_instance["branches"][setting] = branches
+                if translated:
+                    task_instance["branches"][setting] = branches
+                else:
+                    task_instance["branch_translate"][setting] = branches
 
                 if os.path.exists(".coverage"):
                     logger.info("Removing coverage")
@@ -363,7 +366,9 @@ def postprocess_functions(
         successful_tests.append((None, class_wrapper_start + class_content))
 
 
-def full_processing(prompt_list, tcm, task_instance, skip_mutation, setting: str):
+def full_processing(
+    prompt_list, tcm, task_instance, tranlsated, skip_mutation, setting: str
+):
     for prompt in prompt_list:
         preamble, classes, test_functions = extract_preamble_classes_and_functions(
             prompt, tcm
@@ -471,6 +476,7 @@ def main(
     repo_dir: str,
     log_dir: str,
     timeout: Optional[int],
+    translated: bool = False,
     image_type: str = "conda",
     only_baseline: bool = False,
     skip_mutation: bool = False,
@@ -525,7 +531,10 @@ def main(
                 else task_instance[KEY_PREDICTIONS][setting]
             )
         else:
-            prompt_list = [task_instance["test_cases"][setting]]
+            if translated:
+                prompt_list = [task_instance["translate"][setting]]
+            else:
+                prompt_list = [task_instance["test_cases"][setting]]
         if setting == "full" or "test_case" in setting:
             full_processing(
                 prompt_list, tcm, task_instance, skip_mutation, setting=setting
@@ -573,12 +582,17 @@ if __name__ == "__main__":
     if setting is None:
         raise ValueError("SETTING environment variable is not set")
 
+    translated = os.getenv("TRANSLATED")
+    if translated is None:
+        raise ValueError("TRANSLATED environment variable is not set")
+
     main(
         task_instance=task_instance,
         testbed_name=testbed_name,
         repo_dir=repo_dir,
         log_dir=log_dir,
         timeout=int_timeout,
+        translated=translated,
         setting=setting,
         image_type=os.getenv("IMAGE_TYPE", "conda"),
         only_baseline=os.getenv("ONLY_BASELINE") == "True",

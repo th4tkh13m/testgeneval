@@ -23,6 +23,7 @@ async def main(
     timeout: int = 60,
     num_processes: int = -1,
     debug: bool = False,
+    translated: bool = False,
 ):
     """
     Runs evaluation on predictions for each model/repo/version combination.
@@ -122,15 +123,21 @@ async def main(
         if result is None:
             continue
         res, setting = result
+        if translated == False:
+            branch_key = "branches"
+            test_case_key = "test_cases"
+        else:
+            branch_key = "branch_translate"
+            test_case_key = "translate"
         logger.info(f"================== Task {res[KEY_ID]} ==================")
         logger.info(
-            f"Task {res[KEY_ID]} orignally has {len(task_dict[res[KEY_ID]]['branches'])} branches and {len(task_dict[res[KEY_ID]]['test_cases'])} test cases"
+            f"Task {res[KEY_ID]} orignally has {len(task_dict[res[KEY_ID]][branch_key])} branches and {len(task_dict[res[KEY_ID]][test_case_key])} test cases"
         )
         logger.info(
-            f"Results {res[KEY_ID]} orignally has {len(res['branches'])} branches and {len(res['test_cases'])} test cases"
+            f"Results {res[KEY_ID]} orignally has {len(res[branch_key])} branches and {len(res[test_case_key])} test cases"
         )
-        for key in res["branches"].keys():
-            task_dict[res[KEY_ID]]["branches"][key] = res["branches"][key]
+        for key in res[branch_key].keys():
+            task_dict[res[KEY_ID]][branch_key][key] = res[branch_key][key]
         # task_dict[res[KEY_ID]]["branches"][setting] = res["branches"][setting]
 
     with open(res_path, "w") as f:
@@ -167,5 +174,6 @@ if __name__ == "__main__":
     parser.add_argument("--timeout", type=int, default=60)
     parser.add_argument("--num_processes", type=int, default=-1)
     parser.add_argument("--debug", action="store_true")
+    parser.add_argument("--translated", action="store_true")
     args = parser.parse_args()
     asyncio.run(main(**vars(args)))

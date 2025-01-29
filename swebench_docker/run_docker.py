@@ -28,6 +28,7 @@ async def run_docker_evaluation(
     ind: int,
     timeout: int = 60,
     verbose: bool = False,
+    translated: bool = False,
     base64_instance: bool = True,
     only_baseline: bool = False,
     skip_mutation: bool = False,
@@ -94,6 +95,8 @@ async def run_docker_evaluation(
             f"ONLY_BASELINE={only_baseline}",
             "-e",
             f"SKIP_MUTATION={skip_mutation}",
+            "-e",
+            f"TRANSLATED={translated}",
             docker_image,
         ]
     else:
@@ -124,6 +127,8 @@ async def run_docker_evaluation(
             f"ONLY_BASELINE={only_baseline}",
             "-e",
             f"SKIP_MUTATION={skip_mutation}",
+            "-e",
+            f"TRANSLATED={translated}",
             docker_image,
         ]
 

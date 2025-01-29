@@ -55,12 +55,6 @@ def main(args):
     if args.process_data_only:
         exit(0)
 
-    # Run LLM translate
-    # if not args.skip_translate:
-    #     dataset.run_llm_translate()
-
-    # Run evaluation
-    # dataset.extract_branch()
     if args.get_ground_truth_branch:
         eval_cmd = [
             "python",
