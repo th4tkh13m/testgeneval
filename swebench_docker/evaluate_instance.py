@@ -585,6 +585,7 @@ if __name__ == "__main__":
     translated = os.getenv("TRANSLATED")
     if translated is None:
         raise ValueError("TRANSLATED environment variable is not set")
+    translated = translated == "True"
 
     main(
         task_instance=task_instance,
