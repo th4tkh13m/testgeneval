@@ -276,7 +276,7 @@ def postprocess_tests(
                         branches.append([e[0], e[1]])
                         visited.append(e[0])
                         visited.append(e[1])
-                if translated:
+                if translated == False:
                     task_instance["branches"][setting] = branches
                 else:
                     task_instance["branch_translate"][setting] = branches
@@ -368,7 +368,7 @@ def postprocess_functions(
                         branches.append([e[0], e[1]])
                         visited.append(e[0])
                         visited.append(e[1])
-                if translated:
+                if translated == False:
                     task_instance["branches"][setting] = branches
                 else:
                     task_instance["branch_translate"][setting] = branches
