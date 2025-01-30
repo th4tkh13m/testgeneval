@@ -77,7 +77,7 @@ def main(args):
         subprocess.run(eval_cmd)
 
     if args.translate:
-        eval_cmd = [
+        translate_cmd = [
             "python",
             "run_translation.py",
             "--log_dir",
@@ -85,7 +85,7 @@ def main(args):
             "--repo",
             args.repo,
             "--data_path",
-            os.path.join(args.data_path, f"{data_suf}_processed.jsonl"),
+            os.path.join(args.data_path, f"{data_suf}.jsonl"),
             "--res_path",
             os.path.join(args.data_path, f"{data_suf}_translated.jsonl"),
             "--model",
@@ -99,7 +99,7 @@ def main(args):
         ]
         if args.debug:
             eval_cmd.append("--debug")
-        subprocess.run(eval_cmd)
+        subprocess.run(translate_cmd)
 
 
 if __name__ == "__main__":

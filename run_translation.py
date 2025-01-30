@@ -117,8 +117,8 @@ def main(args):
             )
             for test_case_key in task_dict[key]["test_cases"].keys():
 
-                if task_dict[key]["branches"][test_case_key] == []:
-                    continue
+                # if task_dict[key]["branches"][test_case_key] == []:
+                #     continue
 
                 src_code = task_dict[key]["code_src"]
                 test_case = task_dict[key]["test_cases"][test_case_key]
