@@ -132,7 +132,7 @@ async def main(
             branch_key = "branch_translate"
             test_case_key = "translate"
         logger.info(f"================== Task {res[KEY_ID]} ==================")
-        logger.info(f"Task instance branches: {res['branches']}")
+        logger.info(f"Task instance branches: {res[branch_key][setting]}")
         logger.info(
             f"Task {res[KEY_ID]} orignally has {len(task_dict[res[KEY_ID]][branch_key])} branches and {len(task_dict[res[KEY_ID]][test_case_key])} test cases"
         )
