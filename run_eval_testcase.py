@@ -120,6 +120,7 @@ async def main(
                 asyncio_tasks.append(task)
 
     results = await asyncio.gather(*asyncio_tasks)
+    # setting_res = []
     for result in results:
         # print(result)
         if result is None:
@@ -140,11 +141,11 @@ async def main(
             f"Results {res[KEY_ID]} orignally has {len(res[branch_key])} branches and {len(res[test_case_key])} test cases"
         )
         # for key in res[branch_key].keys():
-        logger.info(f"Setting {setting} has {len(res[branch_key][setting])} branches")
+        # logger.info(f"Setting {setting} has {len(res[branch_key][setting])} branches")
         for setting_ in res[branch_key].keys():
             if res[branch_key][setting_] != []:
                 logger.info(
-                    f"Setting {setting_} has {len(res[branch_key][setting_])} branches"
+                    f"Setting {setting_} at setting {setting} has {len(res[branch_key][setting_])} branches"
                 )
                 task_dict[res[KEY_ID]][branch_key][setting_] = res[branch_key][setting_]
                 break

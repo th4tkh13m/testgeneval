@@ -169,11 +169,18 @@ async def run_docker_evaluation(
                 f"[{task_instance['id']}][{docker_image}]  Container ran successfully in {elapsed_time} seconds."
             )
         # read task instance from tmpfile_path
-        if os.path.exists(os.path.join(log_dir, f"{task_instance[KEY_ID]}.json")):
-            with open(os.path.join(log_dir, f"{task_instance[KEY_ID]}.json"), "r") as f:
+        if os.path.exists(
+            os.path.join(log_dir, f"{task_instance[KEY_ID]}_setting_{setting}.json")
+        ):
+            with open(
+                os.path.join(
+                    log_dir, f"{task_instance[KEY_ID]}_setting_{setting}.json"
+                ),
+                "r",
+            ) as f:
                 task_instance = json.load(f)
                 logger.info(
-                    f"Task instance {task_instance[KEY_ID]} loaded from {task_instance[KEY_ID]}.json"
+                    f"Task instance {task_instance[KEY_ID]} for setting {setting} loaded from {task_instance[KEY_ID]}_setting_{setting}.json"
                 )
                 # logger.info(f"Task instance branches: {task_instance['branches']}")
             return task_instance, setting

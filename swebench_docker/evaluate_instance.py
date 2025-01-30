@@ -410,7 +410,12 @@ def full_processing(
 
         # save task_instance
         # tmpfile_path = tempfile.mktemp(suffix=".json")
-        with open(os.path.join(tcm.log_dir, f"{task_instance[KEY_ID]}.json"), "w") as f:
+        with open(
+            os.path.join(
+                tcm.log_dir, f"{task_instance[KEY_ID]}_setting_{setting}.json"
+            ),
+            "w",
+        ) as f:
             json.dump(task_instance, f)
 
         tcm.log.write(f"{TESTS_CONFIG}full pred\n")
