@@ -141,7 +141,11 @@ async def main(
         )
         # for key in res[branch_key].keys():
         logger.info(f"Setting {setting} has {len(res[branch_key][setting])} branches")
-        task_dict[res[KEY_ID]][branch_key][setting] = res[branch_key][setting]
+        for setting_ in res[branch_key].keys():
+            if res[branch_key][setting_] != []:
+                task_dict[res[KEY_ID]][branch_key][setting_] = res[branch_key][setting_]
+                break
+
         # task_dict[res[KEY_ID]]["branches"][setting] = res["branches"][setting]
 
     with open(res_path, "w") as f:
