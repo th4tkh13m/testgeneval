@@ -197,7 +197,14 @@ def extract_preamble_classes_and_functions(code, tcm):
 
 
 def postprocess_tests(
-    task_instance, preamble, class_name, methods, successful_tests, tcm, setting
+    task_instance,
+    preamble,
+    class_name,
+    methods,
+    successful_tests,
+    tcm,
+    setting,
+    translated=False,
 ):
     repo = task_instance["repo"]
     django_repo = repo == "django/django"
@@ -280,7 +287,13 @@ def postprocess_tests(
 
 
 def postprocess_functions(
-    task_instance, preamble, test_functions, successful_tests, tcm, setting
+    task_instance,
+    preamble,
+    test_functions,
+    successful_tests,
+    tcm,
+    setting,
+    translated=False,
 ):
     repo = task_instance["repo"]
     django_repo = repo == "django/django"
@@ -355,7 +368,10 @@ def postprocess_functions(
                         branches.append([e[0], e[1]])
                         visited.append(e[0])
                         visited.append(e[1])
-                task_instance["branches"][setting] = branches
+                if translated:
+                    task_instance["branches"][setting] = branches
+                else:
+                    task_instance["branch_translate"][setting] = branches
                 logger.info(f"====================== Branches: {branches}")
 
                 if os.path.exists(".coverage"):
