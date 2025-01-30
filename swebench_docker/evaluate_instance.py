@@ -537,7 +537,12 @@ def main(
                 prompt_list = [task_instance["test_cases"][setting]]
         if setting == "full" or "test_case" in setting:
             full_processing(
-                prompt_list, tcm, task_instance, skip_mutation, setting=setting
+                prompt_list,
+                tcm,
+                task_instance,
+                tranlsated=translated,
+                skip_mutation=skip_mutation,
+                setting=setting,
             )
         else:
             completion_processing(
