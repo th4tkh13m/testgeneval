@@ -107,6 +107,7 @@ async def main(
                             log_dir,
                             testcase,
                             timeout,
+                            translated=translated,
                             only_baseline=True,
                             verbose=True,
                             skip_mutation=True,
