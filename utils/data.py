@@ -27,13 +27,7 @@ class Data(object):
         console: Console = None,
     ) -> None:
 
-        if (
-            data_name not in ["kjain14/testgeneval", "kjain14/testgenevallite"]
-            and data_path is None
-        ):
-            raise ValueError(
-                "Invalid data name without data path, please provide data path"
-            )
+       
         self.data_name = data_name
         self.data_path = data_path
         self.save_path = save_path
